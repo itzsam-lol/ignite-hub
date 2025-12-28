@@ -1,73 +1,185 @@
-# Welcome to your Lovable project
+# Ignite Room — Official Community Website
 
-## Project info
+A premium, production-ready website for **Ignite Room**, a student-led technology community focused on empowering learners, innovators, and builders.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## ✨ Features
 
-## How can I edit this code?
+- **3D Interactive Logo** — Scroll-reactive 3D flame logo using React Three Fiber
+- **Smooth Animations** — Framer Motion scroll reveals and micro-interactions
+- **Dark Theme** — Deep maroon-to-black gradients with fire-pink accents
+- **Responsive Design** — Mobile-first, works on all devices
+- **SEO Optimized** — Meta tags, semantic HTML, proper heading structure
+- **Performance Focused** — Lazy loading, optimized assets, low-poly 3D
 
-There are several ways of editing your application.
+## 🛠️ Tech Stack
 
-**Use Lovable**
+- **Framework**: React 18 + TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS + CSS Variables
+- **Animations**: Framer Motion
+- **3D Graphics**: Three.js + React Three Fiber + Drei
+- **UI Components**: Shadcn/ui (customized)
+- **Icons**: Lucide React
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🚀 Local Development Setup
 
-**Use your preferred IDE**
+### Prerequisites
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- **Node.js** 18+ (recommended: use [nvm](https://github.com/nvm-sh/nvm))
+- **npm**, **yarn**, **pnpm**, or **bun**
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Step 1: Clone the Repository
 
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+```bash
+# Clone from GitHub (after connecting via Lovable Settings → GitHub)
 git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
 cd <YOUR_PROJECT_NAME>
+```
 
-# Step 3: Install the necessary dependencies.
-npm i
+### Step 2: Install Dependencies
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
+# Using npm
+npm install
+
+# Using yarn
+yarn install
+
+# Using pnpm
+pnpm install
+
+# Using bun (fastest)
+bun install
+```
+
+### Step 3: Run Development Server
+
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The site will be available at **http://localhost:5173**
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Step 4: Build for Production
 
-**Use GitHub Codespaces**
+```bash
+# Build optimized production bundle
+npm run build
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+# Preview production build locally
+npm run preview
+```
 
-## What technologies are used for this project?
+---
 
-This project is built with:
+## 📁 Project Structure
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```
+ignite-room-website/
+├── public/
+│   └── models/
+│       └── ignite-logo.glb      # 3D logo model (scroll-interactive)
+├── src/
+│   ├── assets/
+│   │   └── ignite-logo.png      # 2D logo
+│   ├── components/
+│   │   ├── ui/                  # Shadcn components
+│   │   ├── sections/            # Page sections
+│   │   │   ├── HeroSection.tsx
+│   │   │   ├── AboutSection.tsx
+│   │   │   ├── EventsSection.tsx
+│   │   │   ├── TeamSection.tsx
+│   │   │   ├── AppSection.tsx
+│   │   │   └── CollaborationsSection.tsx
+│   │   ├── Logo3DBackground.tsx # 3D interactive background
+│   │   ├── Navbar.tsx
+│   │   └── Footer.tsx
+│   ├── pages/
+│   │   └── Index.tsx            # Main page
+│   ├── index.css                # Design system & tokens
+│   └── main.tsx                 # Entry point
+├── tailwind.config.ts           # Tailwind configuration
+├── vite.config.ts               # Vite configuration
+└── index.html                   # HTML template with SEO meta
+```
 
-## How can I deploy this project?
+---
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## 🎨 Design System
 
-## Can I connect a custom domain to my Lovable project?
+Colors are defined in `src/index.css` using HSL CSS variables:
 
-Yes, you can!
+| Variable | Description |
+|----------|-------------|
+| `--primary` | Fire pink-red accent (345° 100% 59%) |
+| `--background` | Deep dark background |
+| `--secondary` | Maroon-tinted secondary |
+| `--gradient-hero` | Hero section gradient |
+| `--gradient-text` | Gradient text effect |
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Typography
+- **Headings**: Space Grotesk (Google Fonts)
+- **Body**: Inter (Google Fonts)
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+---
+
+## 🔧 Customization
+
+### Updating Colors
+Edit `src/index.css`:
+```css
+:root {
+  --primary: 345 100% 59%;  /* Fire pink-red */
+}
+```
+
+### Adding Team Members
+Edit `src/components/sections/TeamSection.tsx`
+
+### Adding Events
+Edit `src/components/sections/EventsSection.tsx`
+
+---
+
+## 🚢 Deployment
+
+### Option 1: Lovable (Easiest)
+Click **Publish** in the Lovable editor → instant deployment with SSL.
+
+### Option 2: Vercel
+1. Push to GitHub
+2. Import in [Vercel](https://vercel.com)
+3. Auto-deploys on push
+
+### Option 3: Netlify
+1. Push to GitHub
+2. Import in [Netlify](https://netlify.com)
+3. Build command: `npm run build`
+4. Publish directory: `dist`
+
+### Option 4: Manual/Static Hosting
+```bash
+npm run build
+# Upload 'dist' folder to any static host
+```
+
+---
+
+## ⚡ Performance Notes
+
+- **3D Model**: `.glb` file is optimized and lazy-loaded
+- **Images**: Use WebP for team photos
+- **Fonts**: Preloaded via Google Fonts
+- **Code Splitting**: 3D canvas loads via React Suspense
+
+---
+
+## 📄 License
+
+MIT License — free to use for your community!
+
+---
+
+Built with 🔥 by **Ignite Room** using [Lovable](https://lovable.dev)
