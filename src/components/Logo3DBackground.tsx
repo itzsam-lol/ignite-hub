@@ -15,12 +15,13 @@ function IgniteLogo3D({ scrollProgress }: { scrollProgress: number }) {
         const material = new THREE.MeshStandardMaterial({
           color: new THREE.Color('#ff2d55'),
           emissive: new THREE.Color('#ff2d55'),
-          emissiveIntensity: 0.4,
+          emissiveIntensity: 0.6,
           transparent: true,
-          opacity: 0.15,
-          roughness: 0.2,
-          metalness: 0.9,
+          opacity: 0.35,
+          roughness: 0.15,
+          metalness: 0.95,
           side: THREE.DoubleSide,
+          envMapIntensity: 1.2,
         });
         child.material = material;
         materialRef.current = material;
@@ -39,24 +40,24 @@ function IgniteLogo3D({ scrollProgress }: { scrollProgress: number }) {
       groupRef.current.rotation.z = Math.cos(time * 0.2) * 0.05;
       
       // Scroll-based positioning
-      groupRef.current.position.y = Math.sin(time * 0.5) * 0.3 - scrollProgress * 2;
+      groupRef.current.position.y = Math.sin(time * 0.5) * 0.2 - scrollProgress * 1.5;
       groupRef.current.position.z = -3 - scrollProgress * 8;
       
       // Scale with scroll
-      const scale = 2.5 - scrollProgress * 1;
-      groupRef.current.scale.setScalar(Math.max(1.2, scale));
+      const scale = 1.2 - scrollProgress * 0.6;
+      groupRef.current.scale.setScalar(Math.max(0.7, scale));
     }
     
     // Update material opacity based on scroll
     if (materialRef.current) {
-      materialRef.current.opacity = Math.max(0.05, 0.18 - scrollProgress * 0.12);
-      materialRef.current.emissiveIntensity = Math.max(0.2, 0.5 - scrollProgress * 0.3);
+      materialRef.current.opacity = Math.max(0.15, 0.35 - scrollProgress * 0.15);
+      materialRef.current.emissiveIntensity = Math.max(0.3, 0.6 - scrollProgress * 0.3);
     }
   });
 
   return (
-    <Float speed={2} rotationIntensity={0.15} floatIntensity={0.4}>
-      <group ref={groupRef} scale={2.5} position={[0, 0, -3]}>
+    <Float speed={2} rotationIntensity={0.15} floatIntensity={0.3}>
+      <group ref={groupRef} scale={1.2} position={[0, 0, -3]}>
         <primitive object={scene} />
       </group>
     </Float>
@@ -78,7 +79,7 @@ function GlowingParticles({ scrollProgress }: { scrollProgress: number }) {
     <group ref={groupRef}>
       {Array.from({ length: particleCount }).map((_, i) => {
         const angle = (i / particleCount) * Math.PI * 2;
-        const radius = 5 + i * 0.8;
+        const radius = 3 + i * 0.5;
         return (
           <mesh
             key={i}
@@ -104,14 +105,15 @@ function GlowingParticles({ scrollProgress }: { scrollProgress: number }) {
 function Scene({ scrollProgress }: { scrollProgress: number }) {
   return (
     <>
-      <ambientLight intensity={0.6} />
-      <pointLight position={[5, 5, 5]} intensity={1.5} color="#ff2d55" />
-      <pointLight position={[-5, -5, 5]} intensity={0.8} color="#ff6b8a" />
+      <ambientLight intensity={0.8} />
+      <pointLight position={[8, 5, 8]} intensity={2} color="#ff2d55" />
+      <pointLight position={[-8, -5, 8]} intensity={1.2} color="#ff6b8a" />
+      <pointLight position={[0, 0, 8]} intensity={1.5} color="#ffffff" />
       <spotLight 
-        position={[0, 10, 5]} 
-        angle={0.3} 
+        position={[0, 12, 6]} 
+        angle={0.4} 
         penumbra={1} 
-        intensity={1} 
+        intensity={1.2} 
         color="#ff2d55" 
       />
       <Suspense fallback={null}>

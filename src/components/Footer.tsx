@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Twitter, Instagram, Linkedin, Github, Mail } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import igniteLogo from '@/assets/ignite-logo.png';
 
 const footerLinks = {
@@ -7,32 +8,54 @@ const footerLinks = {
     { name: 'About Us', href: '#about' },
     { name: 'Events', href: '#events' },
     { name: 'Team', href: '#team' },
-    { name: 'Join Us', href: '#' },
+    { name: 'Join Us', href: '/join-us' },
   ],
   resources: [
-    { name: 'Blog', href: '#' },
-    { name: 'Newsletter', href: '#' },
-    { name: 'FAQs', href: '#' },
-    { name: 'Contact', href: '#' },
+    { name: 'Blog', href: '/blog' },
+    { name: 'Newsletter', href: '/newsletter' },
+    { name: 'FAQs', href: '/faqs' },
+    { name: 'Contact', href: '/contact' },
   ],
   legal: [
-    { name: 'Privacy Policy', href: '#' },
-    { name: 'Terms of Service', href: '#' },
-    { name: 'Code of Conduct', href: '#' },
+    { name: 'Privacy Policy', href: '/privacy-policy' },
+    { name: 'Terms of Service', href: '/terms-of-service' },
+    { name: 'Code of Conduct', href: '/code-of-conduct' },
+    { name: 'Disclaimer', href: '/disclaimer' },
+    { name: 'Accessibility', href: '/accessibility' },
+    { name: 'Cookie Policy', href: '/cookie-policy' },
   ],
 };
 
 const socialLinks = [
-  { name: 'Twitter', icon: Twitter, href: '#' },
-  { name: 'Instagram', icon: Instagram, href: '#' },
-  { name: 'LinkedIn', icon: Linkedin, href: '#' },
-  { name: 'GitHub', icon: Github, href: '#' },
-  { name: 'Email', icon: Mail, href: 'mailto:hello@igniteroom.com' },
+  { name: 'Instagram', icon: Instagram, href: 'https://www.instagram.com/ignite.room/' },
+  { name: 'LinkedIn', icon: Linkedin, href: 'https://www.linkedin.com/company/ignite-room/' },
+  { name: 'GitHub', icon: Github, href: 'https://github.com/itzsam-lol/ignite-hub' },
+  { name: 'Email', icon: Mail, href: 'mailto:collabwithigniteroom@gamil.com' },
 ];
 
 export default function Footer() {
+  const navigate = useNavigate();
+
+  const handleNavigation = (href: string, e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+
+    if (href.startsWith('#')) {
+      const id = href.slice(1);
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    // Use navigate for route paths then scroll to top
+    navigate(href);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
   return (
-    <footer className="bg-secondary/30 border-t border-border/50">
+    <footer className="bg-secondary/30 border-t border-border/50 pointer-events-auto">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12">
           {/* Brand */}
@@ -70,12 +93,23 @@ export default function Footer() {
             <ul className="space-y-3">
               {footerLinks.community.map((link) => (
                 <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {link.name}
-                  </a>
+                  {link.href.startsWith('#') ? (
+                    <a
+                      href={link.href}
+                      onClick={(e) => handleNavigation(link.href, e)}
+                      className="text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {link.name}
+                    </a>
+                  ) : (
+                    <Link
+                      to={link.href}
+                      onClick={(e) => handleNavigation(link.href, e)}
+                      className="text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
@@ -86,12 +120,13 @@ export default function Footer() {
             <ul className="space-y-3">
               {footerLinks.resources.map((link) => (
                 <li key={link.name}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
+                    onClick={(e) => handleNavigation(link.href, e)}
                     className="text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {link.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -102,12 +137,13 @@ export default function Footer() {
             <ul className="space-y-3">
               {footerLinks.legal.map((link) => (
                 <li key={link.name}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
+                    onClick={(e) => handleNavigation(link.href, e)}
                     className="text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {link.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

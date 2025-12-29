@@ -33,7 +33,9 @@ const Index = () => {
       </main>
 
       {/* Footer */}
-      <Footer />
+      <footer className="relative z-20 pointer-events-auto">
+        <Footer />
+      </footer>
     </div>
   );
 };

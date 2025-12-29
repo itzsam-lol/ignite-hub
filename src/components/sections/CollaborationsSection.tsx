@@ -1,10 +1,12 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
+import pw from 'public/pw.jpg';
+
 
 const partners = [
-  { name: 'Physics Wallah', logo: 'PW' },
+  { name: 'Physics Wallah', logo: 'pw' },
   { name: 'Google Developer Groups', logo: 'GDG' },
-  { name: 'GeeksforGeeks', logo: 'GFG' },
+  { name: 'GeeksforGeeks', logo: '/gfg.png' },
   { name: 'GitHub', logo: 'GH' },
   { name: 'MLH', logo: 'MLH' },
   { name: 'DevFolio', logo: 'DF' },

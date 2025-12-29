@@ -2,6 +2,7 @@ import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Calendar, MapPin, Users, ArrowUpRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 const events = [
   {
@@ -39,6 +40,8 @@ const events = [
 function EventCard({ event, index }: { event: typeof events[0]; index: number }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
+
+  const navigate = useNavigate();
 
   return (
     <motion.div
@@ -95,7 +98,7 @@ function EventCard({ event, index }: { event: typeof events[0]; index: number })
 
           {/* CTA */}
           <div className="pt-4">
-            <Button variant="outline" size="sm" className="group/btn">
+            <Button variant="outline" size="sm" className="group/btn" onClick={() => { navigate('/contact'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               Learn More
               <ArrowUpRight className="w-4 h-4 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
             </Button>
