@@ -1,15 +1,13 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import pw from 'public/pw.jpg';
-
 
 const partners = [
   { name: 'Physics Wallah', logo: 'pw' },
-  { name: 'Google Developer Groups', logo: 'GDG' },
-  { name: 'GeeksforGeeks', logo: '/gfg.png' },
-  { name: 'GitHub', logo: 'GH' },
-  { name: 'MLH', logo: 'MLH' },
-  { name: 'DevFolio', logo: 'DF' },
+  { name: 'Google Developer Groups', logo: 'gdg' },
+  { name: 'GeeksforGeeks', logo: 'gfg' },
+  { name: 'GitHub', logo: 'github' },
+  { name: 'MLH', logo: 'mlh' },
+  { name: 'DevFolio', logo: 'dev' },
 ];
 
 export default function CollaborationsSection() {
@@ -44,11 +42,23 @@ export default function CollaborationsSection() {
               className="group"
             >
               <div className="aspect-square rounded-2xl bg-secondary/50 border border-border/50 flex items-center justify-center hover:bg-secondary hover:border-primary/30 transition-all duration-300">
-                <div className="text-center">
-                  <span className="font-heading text-2xl font-bold text-muted-foreground group-hover:text-primary transition-colors">
-                    {partner.logo}
-                  </span>
-                  <p className="text-xs text-muted-foreground mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="flex flex-col items-center justify-center w-full h-full">
+                  <img
+                    src={`/partners/${partner.logo}.svg`}
+                    alt={partner.name}
+                    loading="lazy"
+                    decoding="async"
+                    onError={(e) => {
+                      const target = e.currentTarget as HTMLImageElement;
+                      if (!target.dataset.fallbackTried) {
+                        target.dataset.fallbackTried = 'true';
+                        target.src = `/partners/${partner.logo}.png`;
+                      }
+                    }}
+                    style={{ imageOrientation: 'from-image' }}
+                    className="block mx-auto max-h-[66%] max-w-[66%] object-contain object-center transform-none transition-all"
+                  />
+                  <p className="text-xs mt-2 opacity-0 group-hover:opacity-100 text-white transition-opacity">
                     {partner.name}
                   </p>
                 </div>
