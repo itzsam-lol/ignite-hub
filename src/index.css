@@ -43,8 +43,8 @@
     /* Custom Ignite Variables */
     --glow-primary: 0 0 60px hsl(345 100% 59% / 0.3);
     --glow-soft: 0 0 100px hsl(345 100% 59% / 0.15);
-    --gradient-hero: linear-gradient(135deg, hsl(345 40% 8%) 0%, hsl(0 0% 4%) 50%, hsl(345 30% 6%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(345 20% 10%) 0%, hsl(345 15% 6%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(345 40% 8% / 0.85) 0%, hsl(0 0% 4% / 0.85) 50%, hsl(345 30% 6% / 0.85) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(345 20% 10% / 0.9) 0%, hsl(345 15% 6% / 0.9) 100%);
     --gradient-text: linear-gradient(135deg, hsl(345 100% 65%) 0%, hsl(20 100% 60%) 100%);
   }
 
@@ -73,6 +73,26 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Space Grotesk', sans-serif;
   }
+
+  /* Make sections semi-transparent to allow 3D logo to show through */
+  section {
+    position: relative;
+  }
+
+  section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: inherit;
+    opacity: 0.95; /* Slight transparency */
+    pointer-events: none;
+  }
+
+  /* Override for sections that need full visibility */
+  section > * {
+    position: relative;
+    z-index: 1;
+  }
 }
 
 @layer components {
@@ -93,6 +113,7 @@
 
   .bg-gradient-hero {
     background: var(--gradient-hero);
+    position: relative;
   }
 
   .bg-gradient-card {
