@@ -65,16 +65,18 @@ const Index = () => {
       </Helmet>
 
       <div className="relative min-h-screen bg-background">
-        {/* 3D Background - lazy loaded, now visible throughout */}
+        {/* 3D Background - now with higher z-index and blend mode */}
         <Suspense fallback={null}>
           <Logo3DBackground />
         </Suspense>
 
-        {/* Navigation */}
-        <Navbar />
+        {/* Navigation - highest z-index */}
+        <div className="relative" style={{ zIndex: 50 }}>
+          <Navbar />
+        </div>
 
-        {/* Main Content */}
-        <main className="relative z-10" role="main">
+        {/* Main Content - sections need to be semi-transparent or use mix-blend-mode */}
+        <main className="relative" style={{ zIndex: 10 }} role="main">
           <HeroSection />
           <AboutSection />
           <EventsSection />
@@ -84,7 +86,7 @@ const Index = () => {
         </main>
 
         {/* Footer */}
-        <footer className="relative z-20 pointer-events-auto" role="contentinfo">
+        <footer className="relative pointer-events-auto" style={{ zIndex: 20 }} role="contentinfo">
           <Footer />
         </footer>
       </div>
