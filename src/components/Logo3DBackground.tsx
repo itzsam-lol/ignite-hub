@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { useGLTF, Float } from '@react-three/drei';
+import { useGLTF, Float, Environment } from '@react-three/drei';
 import * as THREE from 'three';
 
 function IgniteLogo3D({ scrollProgress }: { scrollProgress: number }) {
@@ -9,7 +9,7 @@ function IgniteLogo3D({ scrollProgress }: { scrollProgress: number }) {
   const { scene } = useGLTF('/models/ignite-logo.glb');
 
   useEffect(() => {
-    // Apply fire-colored material to all meshes in the scene
+    // Apply metallic shiny material to all meshes
     scene.traverse((child) => {
       if (child instanceof THREE.Mesh) {
         const material = new THREE.MeshStandardMaterial({
@@ -17,11 +17,11 @@ function IgniteLogo3D({ scrollProgress }: { scrollProgress: number }) {
           emissive: new THREE.Color('#ff2d55'),
           emissiveIntensity: 0.6,
           transparent: true,
-          opacity: 0.35,
-          roughness: 0.15,
-          metalness: 0.95,
+          opacity: 0.7, // Increased for better visibility
+          roughness: 0.2, // Lower roughness for shinier surface
+          metalness: 1.0, // Maximum metalness for metallic look
           side: THREE.DoubleSide,
-          envMapIntensity: 1.2,
+          envMapIntensity: 2.0, // Increased for more reflections
         });
         child.material = material;
         materialRef.current = material;
@@ -31,33 +31,34 @@ function IgniteLogo3D({ scrollProgress }: { scrollProgress: number }) {
 
   useFrame((state) => {
     if (groupRef.current) {
-      // Continuous gentle rotation
       const time = state.clock.elapsedTime;
       
-      // Base floating animation
+      // Fixed orientation - no tilt, straight on
+      // Only rotate on Y axis for gentle spin
       groupRef.current.rotation.y = time * 0.15 + scrollProgress * Math.PI * 1.5;
-      groupRef.current.rotation.x = Math.sin(time * 0.3) * 0.1 + scrollProgress * 0.3;
-      groupRef.current.rotation.z = Math.cos(time * 0.2) * 0.05;
+      groupRef.current.rotation.x = 0; // No X tilt
+      groupRef.current.rotation.z = 0; // No Z tilt
       
-      // Scroll-based positioning
-      groupRef.current.position.y = Math.sin(time * 0.5) * 0.2 - scrollProgress * 1.5;
-      groupRef.current.position.z = -3 - scrollProgress * 8;
+      // Gentle vertical float
+      groupRef.current.position.y = Math.sin(time * 0.4) * 0.2 - scrollProgress * 0.5;
+      groupRef.current.position.z = -4 - scrollProgress * 2;
+      groupRef.current.position.x = 0;
       
-      // Scale with scroll
-      const scale = 1.2 - scrollProgress * 0.6;
-      groupRef.current.scale.setScalar(Math.max(0.7, scale));
+      // Reduced scale - smaller logo
+      const scale = 0.7 - scrollProgress * 0.2; // Much smaller base size
+      groupRef.current.scale.setScalar(Math.max(0.5, scale));
     }
     
-    // Update material opacity based on scroll
+    // Maintain high opacity throughout
     if (materialRef.current) {
-      materialRef.current.opacity = Math.max(0.15, 0.35 - scrollProgress * 0.15);
-      materialRef.current.emissiveIntensity = Math.max(0.3, 0.6 - scrollProgress * 0.3);
+      materialRef.current.opacity = Math.max(0.5, 0.7 - scrollProgress * 0.2);
+      materialRef.current.emissiveIntensity = Math.max(0.4, 0.6 - scrollProgress * 0.2);
     }
   });
 
   return (
-    <Float speed={2} rotationIntensity={0.15} floatIntensity={0.3}>
-      <group ref={groupRef} scale={1.2} position={[0, 0, -3]}>
+    <Float speed={1.5} rotationIntensity={0.1} floatIntensity={0.3}>
+      <group ref={groupRef} scale={0.7} position={[0, 0, -4]}>
         <primitive object={scene} />
       </group>
     </Float>
@@ -66,11 +67,11 @@ function IgniteLogo3D({ scrollProgress }: { scrollProgress: number }) {
 
 function GlowingParticles({ scrollProgress }: { scrollProgress: number }) {
   const groupRef = useRef<THREE.Group>(null);
-  const particleCount = 8;
+  const particleCount = 10;
 
   useFrame((state) => {
     if (groupRef.current) {
-      groupRef.current.rotation.z = state.clock.elapsedTime * 0.03 + scrollProgress * Math.PI * 0.5;
+      groupRef.current.rotation.z = state.clock.elapsedTime * 0.04 + scrollProgress * Math.PI * 0.6;
       groupRef.current.rotation.y = state.clock.elapsedTime * 0.02;
     }
   });
@@ -79,21 +80,21 @@ function GlowingParticles({ scrollProgress }: { scrollProgress: number }) {
     <group ref={groupRef}>
       {Array.from({ length: particleCount }).map((_, i) => {
         const angle = (i / particleCount) * Math.PI * 2;
-        const radius = 3 + i * 0.5;
+        const radius = 2.5 + i * 0.3;
         return (
           <mesh
             key={i}
             position={[
               Math.cos(angle) * radius,
-              Math.sin(angle) * (radius * 0.7),
-              -10 - i * 2,
+              Math.sin(angle) * (radius * 0.5),
+              -6 - i * 1.2,
             ]}
           >
-            <sphereGeometry args={[0.4 + i * 0.15, 16, 16]} />
+            <sphereGeometry args={[0.25 + i * 0.08, 16, 16]} />
             <meshBasicMaterial 
               color="#ff2d55" 
               transparent 
-              opacity={Math.max(0.02, 0.06 - scrollProgress * 0.04)} 
+              opacity={Math.max(0.08, 0.15 - scrollProgress * 0.07)} 
             />
           </mesh>
         );
@@ -105,17 +106,33 @@ function GlowingParticles({ scrollProgress }: { scrollProgress: number }) {
 function Scene({ scrollProgress }: { scrollProgress: number }) {
   return (
     <>
-      <ambientLight intensity={0.8} />
-      <pointLight position={[8, 5, 8]} intensity={2} color="#ff2d55" />
-      <pointLight position={[-8, -5, 8]} intensity={1.2} color="#ff6b8a" />
-      <pointLight position={[0, 0, 8]} intensity={1.5} color="#ffffff" />
+      {/* Enhanced lighting for metallic material */}
+      <ambientLight intensity={1.2} />
+      
+      {/* Key lights for metallic reflections */}
+      <pointLight position={[10, 10, 10]} intensity={3} color="#ffffff" />
+      <pointLight position={[-10, -10, 10]} intensity={2} color="#ff6b8a" />
+      <pointLight position={[0, 0, 15]} intensity={2.5} color="#ffffff" />
+      
+      {/* Rim lights for edge definition */}
       <spotLight 
-        position={[0, 12, 6]} 
-        angle={0.4} 
+        position={[0, 15, 8]} 
+        angle={0.5} 
         penumbra={1} 
-        intensity={1.2} 
+        intensity={2} 
         color="#ff2d55" 
       />
+      <spotLight 
+        position={[10, -5, 10]} 
+        angle={0.4} 
+        penumbra={1} 
+        intensity={1.5} 
+        color="#ffffff" 
+      />
+      
+      {/* Environment map for realistic metallic reflections */}
+      <Environment preset="city" />
+      
       <Suspense fallback={null}>
         <IgniteLogo3D scrollProgress={scrollProgress} />
       </Suspense>
@@ -128,32 +145,49 @@ export default function Logo3DBackground() {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
+    let rafId: number;
+    
     const handleScroll = () => {
       const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = scrollHeight > 0 ? window.scrollY / scrollHeight : 0;
       setScrollProgress(Math.min(1, Math.max(0, progress)));
     };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
     
-    return () => window.removeEventListener('scroll', handleScroll);
+    const smoothScroll = () => {
+      handleScroll();
+      rafId = requestAnimationFrame(smoothScroll);
+    };
+    
+    smoothScroll();
+    
+    return () => {
+      cancelAnimationFrame(rafId);
+    };
   }, []);
 
   return (
     <div 
       className="fixed inset-0 pointer-events-none"
-      style={{ zIndex: 0 }}
+      style={{ 
+        zIndex: 1, // Increased z-index to be above section backgrounds
+        mixBlendMode: 'screen' // Blend mode to show through dark backgrounds
+      }}
+      role="presentation"
+      aria-hidden="true"
     >
       <Canvas
-        camera={{ position: [0, 0, 6], fov: 55 }}
+        camera={{ position: [0, 0, 8], fov: 45 }}
         style={{ background: 'transparent' }}
         gl={{ 
           alpha: true, 
           antialias: true,
-          powerPreference: 'high-performance'
+          powerPreference: 'high-performance',
+          stencil: false,
+          depth: true,
         }}
         dpr={[1, 2]}
+        performance={{ min: 0.5 }}
+        frameloop="always"
       >
         <Scene scrollProgress={scrollProgress} />
       </Canvas>
