@@ -1,51 +1,7 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Linkedin, Github } from 'lucide-react';
-
-const team = [
-  {
-    name: 'Alex Chen',
-    role: 'President',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face',
-    linkedin: '#',
-    github: '#',
-  },
-  {
-    name: 'Priya Sharma',
-    role: 'Vice President',
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop&crop=face',
-    linkedin: '#',
-    github: '#',
-  },
-  {
-    name: 'Rahul Verma',
-    role: 'Tech Lead',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face',
-    linkedin: '#',
-    github: '#',
-  },
-  {
-    name: 'Sarah Johnson',
-    role: 'Events Head',
-    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
-    linkedin: '#',
-    github: '#',
-  },
-  {
-    name: 'Arjun Patel',
-    role: 'Design Lead',
-    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
-    linkedin: '#',
-    github: '#',
-  },
-  {
-    name: 'Maya Singh',
-    role: 'Outreach Head',
-    image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop&crop=face',
-    linkedin: '#',
-    github: '#',
-  },
-];
+import { team } from '../../lib/team';
 
 function TeamMember({ member, index }: { member: typeof team[0]; index: number }) {
   const ref = useRef(null);
@@ -128,11 +84,20 @@ export default function TeamSection() {
           </p>
         </motion.div>
 
-        {/* Team Grid */}
+        {/* Team Grid (show first 3 on main page) */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {team.map((member, index) => (
+          {team.slice(0, 3).map((member, index) => (
             <TeamMember key={member.name} member={member} index={index} />
           ))}
+        </div>
+
+        <div className="text-center mt-8">
+          <a
+            href="/team"
+            className="inline-flex items-center px-6 py-3 rounded-lg bg-primary text-white font-medium shadow-sm hover:brightness-95 transition"
+          >
+            View full team
+          </a>
         </div>
       </div>
     </section>
