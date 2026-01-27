@@ -1,128 +1,193 @@
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
-import { Calendar, MapPin, Users, ArrowUpRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
+import { motion, useInView } from 'framer-motion'
+import { useRef } from 'react'
+import { Calendar, MapPin, Users, ArrowUpRight } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
-const events = [
+type Event = {
+  title: string
+  subtitle: string
+  description: string
+  date: string
+  location: string
+  participants: string
+  status: 'past'
+  externalUrl?: string
+  externalLabel?: string
+}
+
+const events: Event[] = [
   {
-    title: 'Hackarena',
-    subtitle: '36-Hour National Hackathon',
-    description: 'A high-energy national-level hackathon with mentorship, prizes, and industry exposure. Build, innovate, and compete.',
-    date: 'March 2024',
-    location: 'Hybrid',
-    participants: '300+',
+    title: 'Hack the Flame',
+    subtitle: 'National Level Hackathon',
+    description:
+      'Hack the Flame was a national-level offline hackathon conducted in Mumbai, bringing together developers and innovators to solve real-world challenges.',
+    date: '21 December 2025',
+    location: 'Mumbai (Offline)',
+    participants: '200+',
     status: 'past',
-    featured: true,
-  },
-  {
-    title: 'Hackarena Pre-Meetup',
-    subtitle: 'Community Networking',
-    description: 'Speaker sessions and networking event to prepare participants for the main hackathon.',
-    date: 'February 2024',
-    location: 'In-Person',
-    participants: '150+',
-    status: 'past',
-    featured: false,
+    externalUrl:
+      'https://unstop.com/hackathons/hack-the-flame-2025-vasantdada-patil-pratishthans-college-of-engineering-and-visual-arts-mumbai-maharashtra-1584308',
+    externalLabel: 'View on Unstop',
   },
   {
     title: 'Ignite & Initiate',
-    subtitle: 'First-Year Onboarding',
-    description: 'Onboarding and innovation events designed specifically for first-year students entering the tech world.',
-    date: 'September 2024',
+    subtitle: 'First-Year Onboarding Event',
+    description:
+      'An onboarding and innovation-focused event designed to introduce first-year students to the tech ecosystem, community culture, and opportunities.',
+    date: '24 August 2025',
     location: 'Campus',
     participants: '200+',
-    status: 'upcoming',
-    featured: false,
+    status: 'past',
+    externalUrl: 'https://luma.com/waqp78jd',
+    externalLabel: 'View on Luma',
   },
-];
+  {
+    title: 'Hackarena',
+    subtitle: '36-Hour National Hackathon',
+    description:
+      'A 36-hour national-level hackathon featuring mentorship, competitive problem statements, and strong industry exposure.',
+    date: 'June 2025',
+    location: 'Hybrid',
+    participants: '300+',
+    status: 'past',
+  },
+]
 
-function EventCard({ event, index }: { event: typeof events[0]; index: number }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
-
-  const navigate = useNavigate();
+function EventCard({ event, index }: { event: Event; index: number }) {
+  const ref = useRef<HTMLDivElement | null>(null)
+  const isInView = useInView(ref, { once: true })
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 50 }}
+      initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.15 }}
-      className={`group relative rounded-2xl overflow-hidden ${
-        event.featured ? 'md:col-span-2' : ''
-      }`}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="group relative rounded-2xl bg-gradient-card border border-border/60 overflow-hidden hover:border-primary/40 transition-all"
     >
-      <div className="relative p-8 bg-gradient-card border border-border/50 hover:border-primary/40 transition-all duration-500 h-full">
-        {/* Status badge */}
-        <div className="absolute top-6 right-6">
-          <span
-            className={`px-3 py-1 rounded-full text-xs font-medium ${
-              event.status === 'upcoming'
-                ? 'bg-primary/20 text-primary'
-                : 'bg-secondary text-muted-foreground'
-            }`}
-          >
-            {event.status === 'upcoming' ? 'Upcoming' : 'Past Event'}
-          </span>
+      {/* Accent Bar */}
+      <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-primary to-purple-500 opacity-70" />
+
+      <div className="p-6 space-y-4">
+        <span className="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-secondary text-muted-foreground">
+          Past Event
+        </span>
+
+        <div>
+          <h3 className="text-2xl font-bold group-hover:text-gradient transition-all">
+            {event.title}
+          </h3>
+          <p className="text-primary font-medium mt-1">
+            {event.subtitle}
+          </p>
         </div>
 
-        {/* Content */}
-        <div className="space-y-4">
-          <div>
-            <h3 className="font-heading text-2xl md:text-3xl font-bold text-foreground group-hover:text-gradient transition-all">
-              {event.title}
-            </h3>
-            <p className="text-primary font-medium mt-1">{event.subtitle}</p>
+        <p className="text-muted-foreground leading-relaxed">
+          {event.description}
+        </p>
+
+        <div className="grid grid-cols-2 gap-4 pt-2 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2">
+            <Calendar className="w-4 h-4" />
+            {event.date}
           </div>
-
-          <p className="text-muted-foreground leading-relaxed max-w-xl">
-            {event.description}
-          </p>
-
-          {/* Meta info */}
-          <div className="flex flex-wrap items-center gap-4 pt-4">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Calendar className="w-4 h-4" />
-              {event.date}
-            </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <MapPin className="w-4 h-4" />
-              {event.location}
-            </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Users className="w-4 h-4" />
-              {event.participants}
-            </div>
+          <div className="flex items-center gap-2">
+            <MapPin className="w-4 h-4" />
+            {event.location}
           </div>
+          <div className="flex items-center gap-2">
+            <Users className="w-4 h-4" />
+            {event.participants}
+          </div>
+        </div>
 
-          {/* CTA */}
+        {event.externalUrl && (
           <div className="pt-4">
-            <Button variant="outline" size="sm" className="group/btn" onClick={() => { navigate('/contact'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-              Learn More
-              <ArrowUpRight className="w-4 h-4 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+            <Button asChild variant="outline" size="sm" className="group/btn">
+              <a
+                href={event.externalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {event.externalLabel ?? 'View Event'}
+                <ArrowUpRight className="w-4 h-4 ml-1 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+              </a>
             </Button>
           </div>
+        )}
+      </div>
+
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+    </motion.div>
+  )
+}
+
+function UpcomingEventsTeaser() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+      className="relative rounded-2xl border border-dashed border-primary/40 bg-gradient-to-br from-primary/5 to-transparent p-8 overflow-hidden"
+    >
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent"
+        animate={{ x: ['-100%', '100%'] }}
+        transition={{ repeat: Infinity, duration: 2.5, ease: 'linear' }}
+      />
+
+      <div className="relative z-10 text-center space-y-4">
+        <span className="inline-flex px-4 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
+          Upcoming Events
+        </span>
+
+        <h3 className="text-2xl md:text-3xl font-bold">
+          Something exciting is brewing 
+        </h3>
+
+        <p className="text-muted-foreground max-w-xl mx-auto">
+          New hackathons, meetups, and community-driven experiences are on the
+          way. Stay tuned.
+        </p>
+
+        <div className="max-w-md mx-auto space-y-3 pt-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-3 rounded-full bg-muted overflow-hidden">
+              <motion.div
+                className="h-full bg-primary/40"
+                animate={{ x: ['-100%', '100%'] }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 1.8,
+                  delay: i * 0.2,
+                  ease: 'linear',
+                }}
+              />
+            </div>
+          ))}
         </div>
 
-        {/* Hover glow */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+        <p className="text-sm text-muted-foreground pt-4">
+          Announcing soon 
+        </p>
       </div>
     </motion.div>
-  );
+  )
 }
 
 export default function EventsSection() {
-  const headerRef = useRef(null);
-  const isHeaderInView = useInView(headerRef, { once: true, margin: '-100px' });
+  const headerRef = useRef<HTMLDivElement | null>(null)
+  const isHeaderInView = useInView(headerRef, { once: true })
 
   return (
-    <section id="events" className="section-padding bg-background relative overflow-hidden">
-      {/* Background accent */}
+    <section
+      id="events"
+      className="relative section-padding bg-background overflow-hidden"
+    >
       <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* Section Header */}
         <motion.div
           ref={headerRef}
           initial={{ opacity: 0, y: 30 }}
@@ -130,38 +195,28 @@ export default function EventsSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="text-primary font-medium text-sm tracking-wider uppercase mb-4 block">
-            What We Do
+          <span className="text-primary font-medium text-sm uppercase tracking-wider block mb-4">
+            Our Journey
           </span>
-          <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
             Events & Experiences
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            From hackathons to workshops, we create experiences that challenge, 
-            inspire, and connect students with real-world opportunities.
+            A glimpse into the hackathons and community events that shaped
+            IgniteRoom — and what’s coming next.
           </p>
         </motion.div>
 
-        {/* Events Grid */}
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {events.map((event, index) => (
             <EventCard key={event.title} event={event} index={index} />
           ))}
         </div>
 
-        {/* View All CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-center mt-12"
-        >
-          <Button variant="default" size="lg">
-            View All Events
-          </Button>
-        </motion.div>
+        <div className="mt-20">
+          <UpcomingEventsTeaser />
+        </div>
       </div>
     </section>
-  );
+  )
 }
