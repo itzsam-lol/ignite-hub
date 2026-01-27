@@ -10,7 +10,7 @@ export default function HeroSection() {
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-hero">
       {/* Background gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background pointer-events-none" />
-      
+
       {/* Radial glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
 
@@ -45,7 +45,7 @@ export default function HeroSection() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed"
         >
-          Empowering learners, innovators, and builders through hackathons, 
+          Empowering learners, innovators, and builders through hackathons,
           mentorship, and a collaborative ecosystem that turns ideas into reality.
         </motion.p>
 
@@ -56,17 +56,17 @@ export default function HeroSection() {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <Button 
-            variant="hero" 
-            size="lg" 
+          <Button
+            variant="hero"
+            size="lg"
             className="group cursor-pointer"
-            onClick={() => navigate('/join-us')}
+            onClick={() => window.open('https://chat.whatsapp.com/HqqpmbtlbF7DESwKgd5Mc6', '_blank')}
           >
             Join Ignite Room
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </Button>
-          <Button 
-            variant="heroOutline" 
+          <Button
+            variant="heroOutline"
             size="lg"
             onClick={() => document.getElementById('events')?.scrollIntoView({ behavior: 'smooth' })}
           >
