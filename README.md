@@ -156,7 +156,3 @@ Edit `src/components/sections/EventsSection.tsx`
 ## 📄 License
 
 MIT License — free to use for your community!
-
----
-
-Built with 🔥 by **Ignite Room** using [Lovable](https://lovable.dev)
