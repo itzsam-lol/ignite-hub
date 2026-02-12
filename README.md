@@ -142,29 +142,6 @@ Edit `src/components/sections/TeamSection.tsx`
 Edit `src/components/sections/EventsSection.tsx`
 
 ---
-
-## 🚢 Deployment
-
-### Option 1: Lovable (Easiest)
-Click **Publish** in the Lovable editor → instant deployment with SSL.
-
-### Option 2: Vercel
-1. Push to GitHub
-2. Import in [Vercel](https://vercel.com)
-3. Auto-deploys on push
-
-### Option 3: Netlify
-1. Push to GitHub
-2. Import in [Netlify](https://netlify.com)
-3. Build command: `npm run build`
-4. Publish directory: `dist`
-
-### Option 4: Manual/Static Hosting
-```bash
-npm run build
-# Upload 'dist' folder to any static host
-```
-
 ---
 
 ## ⚡ Performance Notes
