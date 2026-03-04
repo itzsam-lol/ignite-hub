@@ -1,0 +1,157 @@
+import { useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { motion } from 'framer-motion';
+import { Eye, EyeOff, Flame, LogIn, AlertCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useAuth } from '@/lib/auth-context';
+
+const schema = z.object({
+    email: z.string().email('Enter a valid email'),
+    password: z.string().min(1, 'Password is required'),
+});
+
+type FormData = z.infer<typeof schema>;
+
+export default function LoginPage() {
+    const { login } = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [showPass, setShowPass] = useState(false);
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/ambassador/dashboard';
+
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+        resolver: zodResolver(schema),
+    });
+
+    const onSubmit = async (data: FormData) => {
+        setError('');
+        setLoading(true);
+        try {
+            await login(data.email, data.password);
+            navigate(from, { replace: true });
+        } catch (e) {
+            setError(e instanceof Error ? e.message : 'Login failed');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="min-h-screen bg-background flex items-center justify-center px-4 relative overflow-hidden">
+            {/* Background glow effects */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
+                <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-accent/8 rounded-full blur-3xl" />
+            </div>
+
+            <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+                className="w-full max-w-md relative"
+            >
+                {/* Card */}
+                <div className="glass-card rounded-2xl p-8 border border-border/50 shadow-2xl">
+                    {/* Logo */}
+                    <div className="flex items-center gap-2 mb-8">
+                        <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+                            <Flame className="w-5 h-5 text-primary" />
+                        </div>
+                        <Link to="/" className="text-xl font-bold text-gradient">Ignite Room</Link>
+                    </div>
+
+                    <div className="mb-6">
+                        <h1 className="text-2xl font-bold text-foreground mb-1">Welcome back</h1>
+                        <p className="text-muted-foreground text-sm">Sign in to your ambassador dashboard</p>
+                    </div>
+
+                    {/* Demo credentials */}
+                    <div className="mb-5 p-3 rounded-lg bg-primary/5 border border-primary/20 text-xs text-muted-foreground">
+                        <p className="font-medium text-primary mb-1">Demo credentials</p>
+                        <p>Ambassador: <span className="text-foreground">satyam@example.com</span> / <span className="text-foreground">password123</span></p>
+                        <p>Admin: <span className="text-foreground">admin@ignitehub.com</span> / <span className="text-foreground">admin123</span></p>
+                    </div>
+
+                    {error && (
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            className="mb-4 p-3 rounded-lg bg-destructive/10 border border-destructive/30 flex items-center gap-2 text-sm text-destructive"
+                        >
+                            <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                            {error}
+                        </motion.div>
+                    )}
+
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                        <div>
+                            <Label htmlFor="email" className="text-sm text-muted-foreground mb-1.5 block">Email</Label>
+                            <Input
+                                id="email"
+                                type="email"
+                                placeholder="you@example.com"
+                                className="bg-secondary/50 border-border/50 focus:border-primary/50 h-11"
+                                {...register('email')}
+                            />
+                            {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>}
+                        </div>
+
+                        <div>
+                            <Label htmlFor="password" className="text-sm text-muted-foreground mb-1.5 block">Password</Label>
+                            <div className="relative">
+                                <Input
+                                    id="password"
+                                    type={showPass ? 'text' : 'password'}
+                                    placeholder="••••••••"
+                                    className="bg-secondary/50 border-border/50 focus:border-primary/50 h-11 pr-10"
+                                    {...register('password')}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPass(!showPass)}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                                >
+                                    {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                </button>
+                            </div>
+                            {errors.password && <p className="mt-1 text-xs text-destructive">{errors.password.message}</p>}
+                        </div>
+
+                        <Button
+                            type="submit"
+                            className="w-full h-11 bg-primary hover:bg-primary/90 text-white font-semibold gap-2"
+                            disabled={loading}
+                        >
+                            {loading ? (
+                                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            ) : (
+                                <>
+                                    <LogIn className="w-4 h-4" />
+                                    Sign In
+                                </>
+                            )}
+                        </Button>
+                    </form>
+
+                    <p className="mt-6 text-center text-sm text-muted-foreground">
+                        Don't have an account?{' '}
+                        <Link to="/ambassador/signup" className="text-primary hover:text-primary/80 font-medium transition-colors">
+                            Sign up free
+                        </Link>
+                    </p>
+                    <p className="mt-3 text-center text-xs text-muted-foreground">
+                        <Link to="/ambassador" className="hover:text-foreground transition-colors">← Back to Ambassador Program</Link>
+                    </p>
+                </div>
+            </motion.div>
+        </div>
+    );
+}
