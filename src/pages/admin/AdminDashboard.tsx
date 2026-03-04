@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
     Users, FileCheck, Trophy, LogOut, CheckCircle2, XCircle,
-    Eye, Download, RefreshCw, Plus, ChevronDown, Building2, IdCard
+    Eye, Download, RefreshCw, Plus, Building2, IdCard, ChevronRight, BarChart2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -29,6 +29,7 @@ interface Ambassador {
     id: string; name: string; email: string; phone: string;
     college: string | null; enrollmentId: string | null; referralCode: string; createdAt: string;
     leaderboardStats: { verifiedTasks: number; externalReferrals: number; totalScore: number } | null;
+    _referralVisits?: number;
 }
 interface LeaderboardEntry {
     rank: number; ambassadorId: string; ambassadorName: string; college: string;
@@ -77,6 +78,7 @@ export default function AdminDashboard() {
     const [extRefModal, setExtRefModal] = useState<{ ambassadorId: string; name: string } | null>(null);
     const [extRefCount, setExtRefCount] = useState('');
     const [toast, setToast] = useState('');
+    const [manageModal, setManageModal] = useState<Ambassador | null>(null);
 
     const showToast = (msg: string) => {
         setToast(msg);
@@ -139,7 +141,7 @@ export default function AdminDashboard() {
     const tabs: { id: Tab; label: string; icon: React.ReactNode; badge?: number }[] = [
         { id: 'applications', label: 'Applications', icon: <Users className="w-4 h-4" />, badge: applications.length },
         { id: 'submissions', label: 'Submissions', icon: <FileCheck className="w-4 h-4" /> },
-        { id: 'ambassadors', label: 'Ambassadors', icon: <Building2 className="w-4 h-4" /> },
+        { id: 'ambassadors', label: 'Ambassadors', icon: <Building2 className="w-4 h-4" />, badge: ambassadors.length },
         { id: 'leaderboard', label: 'Leaderboard', icon: <Trophy className="w-4 h-4" /> },
     ];
 
@@ -149,6 +151,66 @@ export default function AdminDashboard() {
             {toast && (
                 <div className="fixed top-4 right-4 z-50 px-4 py-3 rounded-xl bg-card border border-border shadow-xl text-sm text-foreground animate-in fade-in slide-in-from-top-2">
                     {toast}
+                </div>
+            )}
+
+            {/* Manage Ambassador Detail Modal */}
+            {manageModal && (
+                <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4" onClick={() => setManageModal(null)}>
+                    <div className="bg-card border border-border rounded-2xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+                        <div className="flex items-center gap-3 mb-5">
+                            <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xl flex-shrink-0">
+                                {manageModal.name.charAt(0)}
+                            </div>
+                            <div>
+                                <p className="font-bold text-foreground text-lg">{manageModal.name}</p>
+                                <p className="text-xs text-muted-foreground">{manageModal.email}</p>
+                            </div>
+                        </div>
+
+                        {/* Stats grid */}
+                        <div className="grid grid-cols-3 gap-2 mb-5">
+                            {[
+                                { label: 'Verified Tasks', value: manageModal.leaderboardStats?.verifiedTasks ?? 0, color: 'text-green-400' },
+                                { label: 'Ext. Referrals', value: manageModal.leaderboardStats?.externalReferrals ?? 0, color: 'text-blue-400' },
+                                { label: 'Total Score', value: manageModal.leaderboardStats?.totalScore ?? 0, color: 'text-primary' },
+                            ].map(s => (
+                                <div key={s.label} className="bg-secondary/40 rounded-xl p-3 text-center">
+                                    <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
+                                    <p className="text-xs text-muted-foreground mt-0.5 leading-tight">{s.label}</p>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Details */}
+                        <div className="space-y-0 border border-border/40 rounded-xl overflow-hidden mb-5">
+                            {[
+                                { label: 'College', value: manageModal.college || '—', icon: <Building2 className="w-3.5 h-3.5" /> },
+                                { label: 'Enrollment ID', value: manageModal.enrollmentId || '—', icon: <IdCard className="w-3.5 h-3.5" /> },
+                                { label: 'Phone', value: manageModal.phone, icon: null },
+                                { label: 'Referral Code', value: manageModal.referralCode, isCode: true, icon: null },
+                                { label: 'Joined', value: new Date(manageModal.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }), icon: null },
+                            ].map((row, i) => (
+                                <div key={i} className="flex items-center justify-between px-4 py-2.5 border-b border-border/30 last:border-0">
+                                    <span className="text-sm text-muted-foreground flex items-center gap-1.5">
+                                        {row.icon}{row.label}
+                                    </span>
+                                    {row.isCode
+                                        ? <code className="text-primary text-xs bg-primary/10 px-2 py-0.5 rounded">{row.value}</code>
+                                        : <span className="text-sm text-foreground font-medium text-right max-w-[55%] truncate">{row.value}</span>
+                                    }
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="flex gap-2">
+                            <Button variant="outline" className="flex-1" onClick={() => setManageModal(null)}>Close</Button>
+                            <Button className="flex-1 bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 gap-1.5"
+                                onClick={() => { setManageModal(null); setExtRefModal({ ambassadorId: manageModal.id, name: manageModal.name }); }}>
+                                <Plus className="w-3.5 h-3.5" /> Add Referrals
+                            </Button>
+                        </div>
+                    </div>
                 </div>
             )}
 
@@ -374,26 +436,34 @@ export default function AdminDashboard() {
                         </div>
                         <div className="space-y-3">
                             {ambassadors.map(amb => (
-                                <div key={amb.id} className="glass-card rounded-xl p-5 border border-border/50 flex flex-col sm:flex-row sm:items-center gap-4">
-                                    <div className="flex-1 min-w-0">
-                                        <p className="font-semibold text-foreground">{amb.name}</p>
-                                        <p className="text-sm text-muted-foreground">{amb.email}</p>
-                                        <div className="flex flex-wrap gap-2 mt-1.5">
-                                            <span className="flex items-center gap-1 text-xs bg-secondary/60 px-2 py-0.5 rounded-full">
-                                                <Building2 className="w-3 h-3" /> {amb.college || '–'}
-                                            </span>
-                                            <span className="flex items-center gap-1 text-xs bg-secondary/60 px-2 py-0.5 rounded-full">
-                                                <IdCard className="w-3 h-3" /> {amb.enrollmentId || '–'}
-                                            </span>
-                                            <span className="text-xs text-green-400">✓ {amb.leaderboardStats?.verifiedTasks ?? 0} tasks</span>
-                                            <span className="text-xs text-blue-400">↗ {amb.leaderboardStats?.externalReferrals ?? 0} ext. refs</span>
-                                            <span className="text-xs font-bold text-primary">{amb.leaderboardStats?.totalScore ?? 0} pts</span>
+                                <div key={amb.id} className="glass-card rounded-xl p-4 sm:p-5 border border-border/50 flex flex-col sm:flex-row sm:items-center gap-4">
+                                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                                        <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold flex-shrink-0">
+                                            {amb.name.charAt(0)}
+                                        </div>
+                                        <div className="min-w-0 flex-1">
+                                            <p className="font-semibold text-foreground truncate">{amb.name}</p>
+                                            <p className="text-xs text-muted-foreground truncate">{amb.email}</p>
+                                            <div className="flex flex-wrap gap-1.5 mt-1.5">
+                                                <span className="flex items-center gap-1 text-xs bg-secondary/60 px-2 py-0.5 rounded-full">
+                                                    <Building2 className="w-3 h-3" /> {amb.college || '–'}
+                                                </span>
+                                                <span className="text-xs text-green-400 font-medium">✓ {amb.leaderboardStats?.verifiedTasks ?? 0} tasks</span>
+                                                <span className="text-xs text-blue-400 font-medium">↗ {amb.leaderboardStats?.externalReferrals ?? 0} ext</span>
+                                                <span className="text-xs font-bold text-primary">{amb.leaderboardStats?.totalScore ?? 0} pts</span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <Button size="sm" variant="outline" className="gap-1.5 border-border/50 flex-shrink-0"
-                                        onClick={() => setExtRefModal({ ambassadorId: amb.id, name: amb.name })}>
-                                        <Plus className="w-3.5 h-3.5" /> Add Ext. Referrals
-                                    </Button>
+                                    <div className="flex gap-2 flex-shrink-0">
+                                        <Button size="sm" variant="outline" className="gap-1.5 border-border/50 h-8 text-xs"
+                                            onClick={() => setManageModal(amb)}>
+                                            <BarChart2 className="w-3.5 h-3.5" /> Manage
+                                        </Button>
+                                        <Button size="sm" variant="outline" className="gap-1.5 border-border/50 h-8 text-xs"
+                                            onClick={() => setExtRefModal({ ambassadorId: amb.id, name: amb.name })}>
+                                            <Plus className="w-3.5 h-3.5" /> Ext. Refs
+                                        </Button>
+                                    </div>
                                 </div>
                             ))}
                             {ambassadors.length === 0 && (

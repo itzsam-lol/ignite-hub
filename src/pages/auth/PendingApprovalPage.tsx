@@ -71,7 +71,7 @@ export default function PendingApprovalPage() {
 
                     <p className="mt-6 text-xs text-muted-foreground">
                         Questions? Email us at{' '}
-                        <a href="mailto:hello@igniteroom.in" className="text-primary hover:underline">hello@igniteroom.in</a>
+                        <a href="mailto:admin@igniteroom.in" className="text-primary hover:underline">admin@igniteroom.in</a>
                     </p>
                 </div>
             </motion.div>
