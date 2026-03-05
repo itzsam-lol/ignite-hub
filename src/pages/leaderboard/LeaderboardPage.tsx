@@ -9,9 +9,9 @@ import type { LeaderboardEntry } from '@/lib/mock-api';
 const REFRESH_INTERVAL = 60000;
 
 function RankBadge({ rank }: { rank: number }) {
-    if (rank === 1) return <span className="text-2xl">🥇</span>;
-    if (rank === 2) return <span className="text-2xl">🥈</span>;
-    if (rank === 3) return <span className="text-2xl">🥉</span>;
+    if (rank === 1) return <Trophy className="w-6 h-6 text-amber-400" />;
+    if (rank === 2) return <Trophy className="w-6 h-6 text-gray-300" />;
+    if (rank === 3) return <Trophy className="w-6 h-6 text-amber-600" />;
     return <span className="text-sm font-bold text-muted-foreground">#{rank}</span>;
 }
 
@@ -101,7 +101,7 @@ export default function LeaderboardPage() {
                             <div className="w-14 h-14 rounded-full bg-gray-400/10 border-2 border-gray-400/30 flex items-center justify-center text-xl font-bold text-gray-300 mb-2">
                                 {top3[1]?.ambassadorName.charAt(0)}
                             </div>
-                            <span className="text-2xl mb-1">🥈</span>
+                            <Trophy className="w-6 h-6 text-gray-300 mb-1" />
                             <p className="text-sm font-semibold text-foreground text-center truncate max-w-[100px]">{top3[1]?.ambassadorName.split(' ')[0]}</p>
                             <p className="text-xs text-muted-foreground">{top3[1]?.totalScore} pts</p>
                             <div className="w-full h-20 bg-gray-400/5 border border-gray-400/20 rounded-t-xl mt-3" />
@@ -113,9 +113,13 @@ export default function LeaderboardPage() {
                                 <div className="w-16 h-16 rounded-full bg-amber-400/20 border-2 border-amber-400/50 flex items-center justify-center text-xl font-bold text-amber-300 mb-2 shadow-lg shadow-amber-500/20">
                                     {top3[0]?.ambassadorName.charAt(0)}
                                 </div>
-                                <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-lg">👑</div>
+                                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                                    <div className="bg-amber-500 rounded-full p-1 shadow-sm">
+                                        <Trophy className="w-3 h-3 text-white" />
+                                    </div>
+                                </div>
                             </div>
-                            <span className="text-3xl mb-1">🥇</span>
+                            <Trophy className="w-8 h-8 text-amber-400 mb-1" />
                             <p className="text-base font-bold text-foreground text-center truncate max-w-[110px]">{top3[0]?.ambassadorName.split(' ')[0]}</p>
                             <p className="text-xs text-amber-400">{top3[0]?.totalScore} pts</p>
                             <div className="w-full h-28 bg-amber-500/5 border border-amber-500/20 rounded-t-xl mt-3" />
@@ -126,7 +130,7 @@ export default function LeaderboardPage() {
                             <div className="w-12 h-12 rounded-full bg-amber-700/10 border-2 border-amber-700/30 flex items-center justify-center text-lg font-bold text-amber-600 mb-2">
                                 {top3[2]?.ambassadorName.charAt(0)}
                             </div>
-                            <span className="text-xl mb-1">🥉</span>
+                            <Trophy className="w-5 h-5 text-amber-600 mb-1" />
                             <p className="text-sm font-semibold text-foreground text-center truncate max-w-[100px]">{top3[2]?.ambassadorName.split(' ')[0]}</p>
                             <p className="text-xs text-muted-foreground">{top3[2]?.totalScore} pts</p>
                             <div className="w-full h-14 bg-amber-700/5 border border-amber-700/20 rounded-t-xl mt-3" />

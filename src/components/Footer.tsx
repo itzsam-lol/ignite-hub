@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Twitter, Instagram, Linkedin, Github, Mail } from 'lucide-react';
+import { Twitter, Instagram, Linkedin, Github, Mail, Flame } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import igniteLogo from '@/assets/ignite-logo.png';
 
@@ -155,7 +155,7 @@ export default function Footer() {
             © {new Date().getFullYear()} Ignite Room. All rights reserved.
           </p>
           <p className="text-sm text-muted-foreground">
-            Built with 🔥 by students, for students.
+            Built with <Flame className="w-4 h-4 inline-block text-orange-500 mx-1" /> by students, for students.
           </p>
         </div>
       </div>

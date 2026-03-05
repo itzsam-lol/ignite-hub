@@ -113,7 +113,7 @@ export default function AdminDashboard() {
         try {
             if (!USE_MOCK) await adminFetch(`applications/${id}`, { method: 'PATCH', body: JSON.stringify({ action }) });
             setApplications(prev => prev.filter(a => a.id !== id));
-            showToast(action === 'approve' ? '✅ Ambassador approved!' : '❌ Application rejected.');
+            showToast(action === 'approve' ? 'Ambassador approved!' : 'Application rejected.');
         } catch { showToast('Error updating application'); } finally { setActionLoading(null); }
     };
 
@@ -122,7 +122,7 @@ export default function AdminDashboard() {
         try {
             if (!USE_MOCK) await adminFetch(`submissions/${id}`, { method: 'PATCH', body: JSON.stringify({ action }) });
             setSubmissions(prev => prev.map(s => s.id === id ? { ...s, status: action === 'verify' ? 'VERIFIED' : 'REJECTED' } : s));
-            showToast(action === 'verify' ? '✅ Submission verified!' : '❌ Submission rejected.');
+            showToast(action === 'verify' ? 'Submission verified!' : 'Submission rejected.');
         } catch { showToast('Error updating submission'); } finally { setActionLoading(null); }
     };
 
@@ -131,7 +131,7 @@ export default function AdminDashboard() {
         setActionLoading('extref');
         try {
             if (!USE_MOCK) await adminFetch('external-referrals', { method: 'POST', body: JSON.stringify({ ambassadorId: extRefModal.ambassadorId, count: Number(extRefCount) }) });
-            showToast(`✅ Added ${extRefCount} referrals for ${extRefModal.name}`);
+            showToast(`Added ${extRefCount} referrals for ${extRefModal.name}`);
             setExtRefModal(null);
             setExtRefCount('');
             loadTab('ambassadors');
@@ -448,7 +448,7 @@ export default function AdminDashboard() {
                                                 <span className="flex items-center gap-1 text-xs bg-secondary/60 px-2 py-0.5 rounded-full">
                                                     <Building2 className="w-3 h-3" /> {amb.college || '–'}
                                                 </span>
-                                                <span className="text-xs text-green-400 font-medium">✓ {amb.leaderboardStats?.verifiedTasks ?? 0} tasks</span>
+                                                <span className="text-xs text-green-400 font-medium flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5" /> {amb.leaderboardStats?.verifiedTasks ?? 0} tasks</span>
                                                 <span className="text-xs text-blue-400 font-medium">↗ {amb.leaderboardStats?.externalReferrals ?? 0} ext</span>
                                                 <span className="text-xs font-bold text-primary">{amb.leaderboardStats?.totalScore ?? 0} pts</span>
                                             </div>
@@ -497,7 +497,7 @@ export default function AdminDashboard() {
                                         {leaderboard.map(entry => (
                                             <tr key={entry.ambassadorId} className="border-b border-border/20 hover:bg-secondary/10 transition-colors">
                                                 <td className="px-4 py-3 font-bold text-foreground">
-                                                    {entry.rank <= 3 ? ['🥇', '🥈', '🥉'][entry.rank - 1] : `#${entry.rank}`}
+                                                    {entry.rank <= 3 ? <Trophy className={`w-4 h-4 inline-block ${entry.rank === 1 ? 'text-amber-400' : entry.rank === 2 ? 'text-gray-300' : 'text-amber-600'}`} /> : `#${entry.rank}`}
                                                 </td>
                                                 <td className="px-4 py-3 font-medium text-foreground">{entry.ambassadorName}</td>
                                                 <td className="px-4 py-3 text-muted-foreground">{entry.college || '–'}</td>

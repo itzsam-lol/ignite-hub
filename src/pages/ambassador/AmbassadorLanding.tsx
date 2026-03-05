@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
     Flame, Trophy, Star, Users, ArrowRight, Zap,
-    CheckCircle2, Gift
+    CheckCircle2, Gift, Camera, Link as LinkIcon
 } from 'lucide-react';
 import igniteLogo from '@/assets/ignite-logo.png';
 import { Button } from '@/components/ui/button';
@@ -118,8 +118,8 @@ export default function AmbassadorLanding() {
                         {[
                             { val: '₹0', label: 'Cost to Join' },
                             { val: '100%', label: 'Free to Participate' },
-                            { val: '🔥', label: 'Hackathon by Ignite Room' },
-                            { val: '🏆', label: 'Real Prizes & Perks' },
+                            { val: <Flame className="w-7 h-7 mx-auto text-orange-500" />, label: 'Hackathon by Ignite Room' },
+                            { val: <Trophy className="w-7 h-7 mx-auto text-amber-400" />, label: 'Real Prizes & Perks' },
                         ].map(s => (
                             <div key={s.label} className="text-center">
                                 <div className="text-2xl font-bold text-foreground">{s.val}</div>
@@ -204,9 +204,10 @@ export default function AmbassadorLanding() {
                             Star the <strong className="text-foreground">daytonaio/daytona</strong> repository on GitHub and upload a screenshot as proof via your referral link. Each verified submission earns you <strong className="text-primary">+1 point</strong>.
                         </p>
                         <div className="flex flex-wrap gap-3 justify-center mb-6">
-                            {['⭐ Star the Repo', '📸 Screenshot Proof', '🔗 Share Your Link', '🏆 Earn Points'].map(t => (
-                                <span key={t} className="px-3 py-1 rounded-full bg-secondary/80 text-sm text-foreground border border-border/50">{t}</span>
-                            ))}
+                            <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/80 text-sm text-foreground border border-border/50"><Star className="w-3.5 h-3.5 text-amber-400" /> Star the Repo</span>
+                            <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/80 text-sm text-foreground border border-border/50"><Camera className="w-3.5 h-3.5 text-muted-foreground" /> Screenshot Proof</span>
+                            <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/80 text-sm text-foreground border border-border/50"><LinkIcon className="w-3.5 h-3.5 text-primary" /> Share Your Link</span>
+                            <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/80 text-sm text-foreground border border-border/50"><Trophy className="w-3.5 h-3.5 text-amber-500" /> Earn Points</span>
                         </div>
                         <Link to="/ambassador/signup">
                             <Button className="bg-primary hover:bg-primary/90 text-white gap-2">
@@ -287,7 +288,7 @@ export default function AmbassadorLanding() {
                     <div className="flex gap-5">
                         <Link to="/" className="hover:text-foreground transition-colors">Main Site</Link>
                         <Link to="/ambassador/leaderboard" className="hover:text-foreground transition-colors">Leaderboard</Link>
-                        <a href="mailto:hello@igniteroom.in" className="hover:text-foreground transition-colors">Contact</a>
+                        <a href="mailto:admin@igniteroom.in" className="hover:text-foreground transition-colors">Contact</a>
                     </div>
                 </div>
             </footer>

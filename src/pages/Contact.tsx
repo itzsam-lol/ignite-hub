@@ -73,7 +73,7 @@ export default function Contact() {
                       <CheckCircle2 className="w-8 h-8 text-primary" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-foreground mb-2">Message sent! 🎉</h3>
+                      <h3 className="text-xl font-bold text-foreground mb-2">Message sent!</h3>
                       <p className="text-muted-foreground text-sm">
                         We've received your message and sent a confirmation to your email. We'll get back to you shortly.
                       </p>
@@ -92,7 +92,7 @@ export default function Contact() {
                         <input
                           type="text"
                           required
-                          placeholder="Satyam Singh"
+                          placeholder="Alex Morgan"
                           value={form.name}
                           onChange={(e) => setForm({ ...form, name: e.target.value })}
                           className="w-full pl-10 pr-4 py-3 rounded-xl border border-border/50 bg-secondary/30 text-foreground placeholder:text-muted-foreground/50 text-sm focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all"

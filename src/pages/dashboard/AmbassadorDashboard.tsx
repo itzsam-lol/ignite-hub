@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
     Copy, Check, Share2, Trophy, Users, BadgeCheck, ExternalLink,
-    LogOut, Star, RefreshCw, AlertTriangle
+    LogOut, Star, RefreshCw, AlertTriangle, MessageCircle, Twitter, Linkedin, Sparkles
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/lib/auth-context';
@@ -80,7 +80,7 @@ export default function AmbassadorDashboard() {
         setTimeout(() => setCopied(false), 2000);
     };
 
-    const shareText = `🔥 Join Ignite Room's HackArena hackathon! Complete a quick task using my referral link.\n\n${referralLink}`;
+    const shareText = `Join Ignite Room's HackArena hackathon! Complete a quick task using my referral link.\n\n${referralLink}`;
     const shareWhatsApp = () => window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank');
     const shareTwitter = () => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`, '_blank');
     const shareLinkedIn = () => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(referralLink)}`, '_blank');
@@ -157,8 +157,8 @@ export default function AmbassadorDashboard() {
 
                     {/* Welcome */}
                     <motion.div variants={itemVariants}>
-                        <h1 className="text-xl sm:text-3xl font-bold text-foreground">
-                            Welcome back, <span className="text-gradient">{user?.name?.split(' ')[0] ?? ''}</span> 👋
+                        <h1 className="text-xl sm:text-3xl font-bold text-foreground flex items-center gap-2">
+                            Welcome back, <span className="text-gradient">{user?.name?.split(' ')[0] ?? ''}</span> <Sparkles className="w-6 h-6 text-amber-400 inline-block mb-1" />
                         </h1>
                         <p className="text-muted-foreground mt-1 text-sm">Track your referrals and submissions here.</p>
                     </motion.div>
@@ -202,18 +202,18 @@ export default function AmbassadorDashboard() {
                         <div className="flex items-center gap-2 flex-wrap">
                             <span className="text-xs text-muted-foreground">Share:</span>
                             <Button size="sm" variant="ghost" onClick={shareWhatsApp}
-                                className="h-8 px-2.5 sm:px-3 text-xs bg-green-500/10 hover:bg-green-500/20 text-green-400 gap-1">
-                                <span className="text-sm">💬</span>
+                                className="h-8 px-2.5 sm:px-3 text-xs bg-green-500/10 hover:bg-green-500/20 text-green-400 gap-1.5 flex items-center">
+                                <MessageCircle className="w-3.5 h-3.5" />
                                 <span>WhatsApp</span>
                             </Button>
                             <Button size="sm" variant="ghost" onClick={shareTwitter}
-                                className="h-8 px-2.5 sm:px-3 text-xs bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 gap-1">
-                                <span className="text-sm">𝕏</span>
+                                className="h-8 px-2.5 sm:px-3 text-xs bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 gap-1.5 flex items-center">
+                                <Twitter className="w-3.5 h-3.5" />
                                 <span>Twitter</span>
                             </Button>
                             <Button size="sm" variant="ghost" onClick={shareLinkedIn}
-                                className="h-8 px-2.5 sm:px-3 text-xs bg-blue-600/10 hover:bg-blue-600/20 text-blue-400 gap-1">
-                                <span className="text-sm">in</span>
+                                className="h-8 px-2.5 sm:px-3 text-xs bg-blue-600/10 hover:bg-blue-600/20 text-blue-400 gap-1.5 flex items-center">
+                                <Linkedin className="w-3.5 h-3.5" />
                                 <span>LinkedIn</span>
                             </Button>
                         </div>
@@ -255,8 +255,8 @@ export default function AmbassadorDashboard() {
                             <div className="space-y-2.5">
                                 {leaderboard.slice(0, 5).map((entry) => (
                                     <div key={entry.ambassadorId} className="flex items-center gap-2.5">
-                                        <span className={`w-6 text-center text-sm font-bold flex-shrink-0 ${entry.rank === 1 ? 'text-amber-400' : entry.rank === 2 ? 'text-gray-300' : entry.rank === 3 ? 'text-amber-600' : 'text-muted-foreground'}`}>
-                                            {entry.rank <= 3 ? ['🥇', '🥈', '🥉'][entry.rank - 1] : `#${entry.rank}`}
+                                        <span className={`w-6 text-center text-sm font-bold flex-shrink-0 flex items-center justify-center ${entry.rank === 1 ? 'text-amber-400' : entry.rank === 2 ? 'text-gray-300' : entry.rank === 3 ? 'text-amber-600' : 'text-muted-foreground'}`}>
+                                            {entry.rank <= 3 ? <Trophy className="w-4 h-4 mx-auto" /> : `#${entry.rank}`}
                                         </span>
                                         <div className="flex-1 min-w-0">
                                             <p className={`text-sm font-medium truncate ${entry.ambassadorId === user?.id ? 'text-primary' : 'text-foreground'}`}>

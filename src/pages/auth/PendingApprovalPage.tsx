@@ -37,7 +37,7 @@ export default function PendingApprovalPage() {
 
                     <h1 className="text-2xl font-bold text-foreground mb-2">Application Received!</h1>
                     {state?.name && (
-                        <p className="text-primary font-medium mb-3">Hi {state.name} 👋</p>
+                        <p className="text-primary font-medium mb-3">Hi {state.name}</p>
                     )}
                     <p className="text-muted-foreground text-sm leading-relaxed mb-6">
                         Your campus ambassador application{state?.college ? ` from ${state.college}` : ''} has been submitted successfully.

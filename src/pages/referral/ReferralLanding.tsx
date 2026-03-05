@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Flame, Star, GitFork, Eye, CheckCircle2, AlertCircle, Upload, X, Loader2, ShieldCheck } from 'lucide-react';
+import { Flame, Star, GitFork, Eye, CheckCircle2, AlertCircle, Upload, X, Loader2, ShieldCheck, Sparkles } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -149,7 +149,7 @@ export default function ReferralLanding() {
                     <div className="w-20 h-20 rounded-full bg-green-500/15 flex items-center justify-center mx-auto mb-6">
                         <CheckCircle2 className="w-10 h-10 text-green-400" />
                     </div>
-                    <h1 className="text-3xl font-bold text-foreground mb-3">Task Submitted! 🎉</h1>
+                    <h1 className="text-3xl font-bold text-foreground mb-3 flex items-center justify-center gap-2">Task Submitted! <Sparkles className="w-8 h-8 text-amber-400" /></h1>
                     <p className="text-muted-foreground mb-2">
                         Your submission has been received and is pending review.
                     </p>
@@ -242,7 +242,7 @@ export default function ReferralLanding() {
                     <div className="space-y-3">
                         {[
                             { n: '1', text: 'Click the button above to open the Daytona GitHub repository' },
-                            { n: '2', text: 'Click the ⭐ Star button in the top right of the repository page' },
+                            { n: '2', text: <span className="flex flex-wrap items-center gap-1">Click the <Star className="w-3.5 h-3.5 text-amber-400" /> Star button in the top right of the repository page</span> },
                             { n: '3', text: 'Take a screenshot showing the star is active' },
                             { n: '4', text: 'Fill the form and upload your screenshot as proof' },
                         ].map(s => (
@@ -327,8 +327,9 @@ export default function ReferralLanding() {
                                 )}
                             </div>
 
-                            <div className="p-3 rounded-lg bg-secondary/30 text-xs text-muted-foreground">
-                                🛡️ Anti-cheat: Each phone number and GitHub username can only be used once. Self-referrals are blocked. Maximum 3 submissions per hour from the same IP.
+                            <div className="p-3 rounded-lg bg-secondary/30 text-xs text-muted-foreground flex items-start gap-2">
+                                <ShieldCheck className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                                <span>Anti-cheat: Each phone number and GitHub username can only be used once. Self-referrals are blocked. Maximum 3 submissions per hour from the same IP.</span>
                             </div>
 
                             <Button type="submit" className="w-full h-11 bg-primary hover:bg-primary/90 text-white font-semibold gap-2" disabled={loading}>

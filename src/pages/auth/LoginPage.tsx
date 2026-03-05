@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, LogIn, AlertCircle, Clock, XCircle } from 'lucide-react';
+import { Eye, EyeOff, LogIn, AlertCircle, Clock, XCircle, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -148,7 +148,7 @@ export default function LoginPage() {
                                     onClick={() => setRememberMe(!rememberMe)}
                                     className={`w-4 h-4 rounded border flex items-center justify-center transition-colors cursor-pointer ${rememberMe ? 'bg-primary border-primary' : 'border-border/60 bg-secondary/40'}`}
                                 >
-                                    {rememberMe && <span className="text-white text-[10px] font-bold leading-none">✓</span>}
+                                    {rememberMe && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
                                 </div>
                                 <span className="text-sm text-muted-foreground">Remember me for 30 days</span>
                             </label>
