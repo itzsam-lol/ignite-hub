@@ -160,7 +160,7 @@ export const api = {
     exportSubmissionsCSV() {
         if (USE_MOCK) return MockAPI.exportSubmissionsCSV();
         // Real backend streams CSV — open in new tab for download
-        const token = localStorage.getItem('ignite_token');
+        const token = localStorage.getItem('ignite_token') || sessionStorage.getItem('ignite_token');
         const url = `${API_BASE}/admin/submissions/export`;
         const a = document.createElement('a');
         a.href = url;

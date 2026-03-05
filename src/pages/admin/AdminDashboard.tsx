@@ -37,7 +37,7 @@ interface LeaderboardEntry {
 }
 
 function authHeader() {
-    const token = localStorage.getItem('ignite_token');
+    const token = localStorage.getItem('ignite_token') || sessionStorage.getItem('ignite_token');
     return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
@@ -430,7 +430,7 @@ export default function AdminDashboard() {
                                 <p className="text-sm text-muted-foreground">{ambassadors.length} approved ambassadors. Add external referrals from Unstop or other platforms.</p>
                             </div>
                             <Button size="sm" variant="outline" className="gap-1.5 border-border/50"
-                                onClick={() => window.open(`${API_URL}/admin/submissions/export?token=${localStorage.getItem('ignite_token')}`, '_blank')}>
+                                onClick={() => window.open(`${API_URL}/admin/submissions/export?token=${localStorage.getItem('ignite_token') || sessionStorage.getItem('ignite_token')}`, '_blank')}>
                                 <Download className="w-3.5 h-3.5" /> Export CSV
                             </Button>
                         </div>

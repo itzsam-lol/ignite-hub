@@ -57,7 +57,7 @@ export default function SubmissionsTable({
                         </thead>
                         <tbody>
                             {submissions.map((sub, i) => {
-                                const sc = statusConfig[sub.status];
+                                const sc = statusConfig[sub.status.toLowerCase() as keyof typeof statusConfig] || statusConfig.pending;
                                 return (
                                     <tr key={sub.id} className={`border-b border-border/20 hover:bg-white/[0.02] transition-colors ${i === submissions.length - 1 ? 'border-b-0' : ''}`}>
                                         <td className="px-5 py-3.5 font-medium text-foreground">{sub.name}</td>
