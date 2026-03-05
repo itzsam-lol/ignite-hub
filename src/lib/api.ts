@@ -6,7 +6,10 @@ import type { Submission, LeaderboardEntry } from './mock-api';
 // VITE_USE_MOCK=true → use localStorage mock (development)
 // VITE_USE_MOCK=false → use real Express backend (production)
 const USE_MOCK = import.meta.env.VITE_USE_MOCK !== 'false';
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+// Ensure fallback works even if env var is empty string
+const API_BASE = (import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL.trim() !== '')
+    ? import.meta.env.VITE_API_URL
+    : 'http://localhost:3001/api';
 
 if (USE_MOCK) MockAPI.init();
 
