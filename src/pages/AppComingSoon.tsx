@@ -2,7 +2,7 @@ import { Suspense, lazy, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Smartphone, ArrowLeft, Flame, Hammer, Bell,
-    Apple, Bot, Rocket, ArrowRight, CheckCircle2,
+    Apple, Bot, Rocket, ArrowRight, CheckCircle2, Loader2,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -24,10 +24,15 @@ const cards = [
     { title: 'Early Access', desc: 'Beta testing coming soon', Icon: Rocket },
 ];
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+
 export default function AppComingSoon() {
     const [notifyOpen, setNotifyOpen] = useState(false);
     const [email, setEmail] = useState('');
     const [submitted, setSubmitted] = useState(false);
+    const [alreadySubscribed, setAlreadySubscribed] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [notifyError, setNotifyError] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
 
     const handleNotifyClick = () => {
@@ -35,14 +40,31 @@ export default function AppComingSoon() {
         setTimeout(() => inputRef.current?.focus(), 120);
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (!email.trim() || !email.includes('@')) return;
-        setSubmitted(true);
+        setLoading(true);
+        setNotifyError('');
+        try {
+            const res = await fetch(`${API_BASE}/notify`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Something went wrong');
+            setAlreadySubscribed(data.exists === true);
+            setSubmitted(true);
+        } catch (err: unknown) {
+            setNotifyError(err instanceof Error ? err.message : 'Failed to subscribe. Try again.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') handleSubmit();
     };
+
 
     return (
         <div className="relative min-h-screen bg-background overflow-hidden flex flex-col items-center justify-center px-6 py-24">
@@ -228,15 +250,20 @@ export default function AppComingSoon() {
                                     />
                                     <motion.button
                                         onClick={handleSubmit}
-                                        whileHover={{ scale: 1.1 }}
-                                        whileTap={{ scale: 0.95 }}
+                                        whileHover={!loading ? { scale: 1.1 } : {}}
+                                        whileTap={!loading ? { scale: 0.95 } : {}}
                                         className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center shrink-0 disabled:opacity-40 transition-colors hover:bg-primary/80"
-                                        disabled={!email.includes('@')}
+                                        disabled={!email.includes('@') || loading}
                                         aria-label="Submit"
                                     >
-                                        <ArrowRight className="w-4 h-4 text-white" />
+                                        {loading
+                                            ? <Loader2 className="w-4 h-4 text-white animate-spin" />
+                                            : <ArrowRight className="w-4 h-4 text-white" />}
                                     </motion.button>
                                 </div>
+                                {notifyError && (
+                                    <p className="text-xs text-destructive mt-2 text-center">{notifyError}</p>
+                                )}
                                 <p className="text-xs text-muted-foreground mt-2 text-center">
                                     We'll ping you as soon as the app is ready. No spam, ever.
                                 </p>
@@ -260,9 +287,13 @@ export default function AppComingSoon() {
                                 >
                                     <CheckCircle2 className="w-7 h-7 text-primary" />
                                 </motion.div>
-                                <p className="text-lg font-semibold text-foreground">You're on the list!</p>
+                                <p className="text-lg font-semibold text-foreground">
+                                    {alreadySubscribed ? 'Already on the list!' : "You're on the list!"}
+                                </p>
                                 <p className="text-sm text-muted-foreground max-w-xs">
-                                    We'll notify <span className="text-primary font-medium">{email}</span> the moment the Ignite Room app goes live.
+                                    {alreadySubscribed
+                                        ? <><span className="text-primary font-medium">{email}</span> is already subscribed. We'll notify you when the app goes live!</>
+                                        : <>We'll notify <span className="text-primary font-medium">{email}</span> the moment the Ignite Room app goes live.</>}
                                 </p>
                                 <Button asChild variant="outline" size="sm" className="mt-2">
                                     <Link to="/">Back to Homepage</Link>
