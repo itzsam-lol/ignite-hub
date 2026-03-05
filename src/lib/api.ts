@@ -12,7 +12,8 @@ if (USE_MOCK) MockAPI.init();
 
 // ── Auth token helper ─────────────────────────────────────────────────────
 function authHeader(): Record<string, string> {
-    const token = localStorage.getItem('ignite_token');
+    // Check both storages: localStorage for "Remember Me" sessions, sessionStorage for regular sessions
+    const token = localStorage.getItem('ignite_token') || sessionStorage.getItem('ignite_token');
     return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
