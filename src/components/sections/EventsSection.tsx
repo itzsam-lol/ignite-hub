@@ -17,6 +17,18 @@ type Event = {
 
 const events: Event[] = [
   {
+    title: 'Conquer The Break',
+    subtitle: 'Fireside Chat with Piyush Sharma',
+    description:
+      'An exclusive fireside chat with Piyush Sharma (@trickymanofficial) — a high-impact session designed to help students plan internships, projects, skills, and strategy for their summer break.',
+    date: 'March 2026',
+    location: 'Microsoft Office Gurgaon',
+    participants: '100+',
+    status: 'past',
+    externalUrl: 'https://lu.ma/embed/event/evt-8fdmyuCPECKcpqg/simple',
+    externalLabel: 'View on Luma',
+  },
+  {
     title: 'Hack the Flame',
     subtitle: 'National Level Hackathon',
     description:
@@ -35,7 +47,7 @@ const events: Event[] = [
     description:
       'An onboarding and innovation-focused event designed to introduce first-year students to the tech ecosystem, community culture, and opportunities.',
     date: '24 August 2025',
-    location: 'Campus',
+    location: 'IIIT Delhi Campus',
     participants: '200+',
     status: 'past',
     externalUrl: 'https://luma.com/waqp78jd',
@@ -143,7 +155,7 @@ function UpcomingEventsTeaser() {
         </span>
 
         <h3 className="text-2xl md:text-3xl font-bold">
-          Something exciting is brewing 
+          Something exciting is brewing
         </h3>
 
         <p className="text-muted-foreground max-w-xl mx-auto">
@@ -169,7 +181,7 @@ function UpcomingEventsTeaser() {
         </div>
 
         <p className="text-sm text-muted-foreground pt-4">
-          Announcing soon 
+          Announcing soon
         </p>
       </div>
     </motion.div>

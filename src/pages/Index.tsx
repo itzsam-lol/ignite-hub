@@ -2,8 +2,8 @@ import { Suspense, lazy } from 'react';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/sections/HeroSection';
 import AboutSection from '@/components/sections/AboutSection';
+// import ActiveEventSection from '@/components/sections/ActiveEventSection'; // re-enable for next live event
 import EventsSection from '@/components/sections/EventsSection';
-import TeamSection from '@/components/sections/TeamSection';
 import AppSection from '@/components/sections/AppSection';
 import CollaborationsSection from '@/components/sections/CollaborationsSection';
 import Footer from '@/components/Footer';
@@ -26,6 +26,7 @@ const Index = () => {
       <main className="relative z-10">
         <HeroSection />
         <AboutSection />
+        {/* <ActiveEventSection /> — re-enable when next event goes live */}
         <EventsSection />
         <AppSection />
         <CollaborationsSection />

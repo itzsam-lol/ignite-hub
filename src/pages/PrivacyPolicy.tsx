@@ -37,7 +37,7 @@ export default function PrivacyPolicy() {
 
                 <section>
                   <h2 className="text-2xl font-heading font-bold text-foreground mb-4">5. Contact</h2>
-                  <p>If you have questions, email hello@igniteroom.com.</p>
+                  <p>If you have questions, email <a href="mailto:admin@igniteroom.in" className="text-primary hover:underline">admin@igniteroom.in</a>.</p>
                 </section>
               </div>
             </motion.div>

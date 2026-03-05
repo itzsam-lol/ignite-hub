@@ -6,7 +6,7 @@ export default function Accessibility() {
   return (
     <div className="relative min-h-screen bg-background">
       <Navbar />
-      
+
       <main className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 py-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -26,8 +26,8 @@ export default function Accessibility() {
                 Our Commitment
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                Ignite Room is committed to making our website accessible to all visitors, regardless of their 
-                abilities or disabilities. We believe that accessibility is not just a feature, but a fundamental 
+                Ignite Room is committed to making our website accessible to all visitors, regardless of their
+                abilities or disabilities. We believe that accessibility is not just a feature, but a fundamental
                 right, and we are continuously working to improve the accessibility of our digital presence.
               </p>
             </section>
@@ -37,8 +37,8 @@ export default function Accessibility() {
                 Accessibility Standards
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                Our website is designed and tested to conform to the Web Content Accessibility Guidelines (WCAG) 
-                2.1 Level AA standards. These guidelines provide recommendations for making web content more 
+                Our website is designed and tested to conform to the Web Content Accessibility Guidelines (WCAG)
+                2.1 Level AA standards. These guidelines provide recommendations for making web content more
                 accessible to people with disabilities.
               </p>
             </section>
@@ -68,8 +68,8 @@ export default function Accessibility() {
                 Assistive Technologies
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                Our website has been tested with popular screen readers including NVDA, JAWS, and VoiceOver 
-                to ensure compatibility. We support the use of keyboard-only navigation and other assistive 
+                Our website has been tested with popular screen readers including NVDA, JAWS, and VoiceOver
+                to ensure compatibility. We support the use of keyboard-only navigation and other assistive
                 technologies.
               </p>
             </section>
@@ -79,8 +79,8 @@ export default function Accessibility() {
                 Known Issues and Workarounds
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                While we strive for perfect accessibility, some issues may occasionally occur. We are 
-                continuously identifying and fixing any accessibility barriers. If you encounter any issues, 
+                While we strive for perfect accessibility, some issues may occasionally occur. We are
+                continuously identifying and fixing any accessibility barriers. If you encounter any issues,
                 please let us know so we can address them.
               </p>
             </section>
@@ -90,8 +90,8 @@ export default function Accessibility() {
                 Browser and Device Support
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                Our website is tested on multiple browsers and devices. While we support the latest versions 
-                of major browsers, some older browsers may not support all features. We encourage you to use 
+                Our website is tested on multiple browsers and devices. While we support the latest versions
+                of major browsers, some older browsers may not support all features. We encourage you to use
                 current browser versions for the best experience.
               </p>
             </section>
@@ -101,7 +101,7 @@ export default function Accessibility() {
                 Third-Party Content
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                Some content on our website is provided by third parties and may not meet our accessibility 
+                Some content on our website is provided by third parties and may not meet our accessibility
                 standards. We work with our partners to improve accessibility where possible.
               </p>
             </section>
@@ -111,11 +111,11 @@ export default function Accessibility() {
                 Feedback and Contact
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                We welcome feedback on the accessibility of our website. If you experience difficulty accessing 
+                We welcome feedback on the accessibility of our website. If you experience difficulty accessing
                 any part of our site, please contact us:
               </p>
               <p className="text-muted-foreground mt-4">
-                Email: <a href="mailto:accessibility@igniteroom.com" className="text-primary hover:underline">accessibility@igniteroom.com</a>
+                Email: <a href="mailto:admin@igniteroom.in" className="text-primary hover:underline">admin@igniteroom.in</a>
               </p>
               <p className="text-muted-foreground mt-2">
                 Please include details about:

@@ -7,12 +7,11 @@ const footerLinks = {
   community: [
     { name: 'About Us', href: '#about' },
     { name: 'Events', href: '#events' },
-    { name: 'Team', href: '#team' },
     { name: 'Join Us', href: '/join-us' },
   ],
   resources: [
-    { name: 'Blog', href: '/blog' },
-    { name: 'Newsletter', href: '/newsletter' },
+    // { name: 'Blog', href: '/blog' },
+    // { name: 'Newsletter', href: '/newsletter' },
     { name: 'FAQs', href: '/faqs' },
     { name: 'Contact', href: '/contact' },
   ],
@@ -30,7 +29,7 @@ const socialLinks = [
   { name: 'Instagram', icon: Instagram, href: 'https://www.instagram.com/ignite.room/' },
   { name: 'LinkedIn', icon: Linkedin, href: 'https://www.linkedin.com/company/ignite-room/' },
   { name: 'GitHub', icon: Github, href: 'https://github.com/itzsam-lol/ignite-hub' },
-  { name: 'Email', icon: Mail, href: 'mailto:collabwithigniteroom@gamil.com' },
+  { name: 'Email', icon: Mail, href: 'mailto:admin@igniteroom.in' },
 ];
 
 export default function Footer() {
@@ -69,7 +68,7 @@ export default function Footer() {
               <span className="font-heading font-bold text-xl text-foreground">Ignite Room</span>
             </motion.a>
             <p className="text-muted-foreground leading-relaxed mb-6 max-w-sm">
-              A student-driven technology community empowering learners, innovators, 
+              A student-driven technology community empowering learners, innovators,
               and builders to turn ideas into reality.
             </p>
             {/* Social Links */}

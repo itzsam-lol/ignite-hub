@@ -6,7 +6,7 @@ export default function CookiePolicy() {
   return (
     <div className="relative min-h-screen bg-background">
       <Navbar />
-      
+
       <main className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 py-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -26,9 +26,9 @@ export default function CookiePolicy() {
                 1. What Are Cookies?
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                Cookies are small text files that are stored on your device (computer, tablet, or mobile phone) 
-                when you visit our website. They help us remember your preferences, understand how you use our 
-                site, and improve your browsing experience. Cookies contain information that is sent back to our 
+                Cookies are small text files that are stored on your device (computer, tablet, or mobile phone)
+                when you visit our website. They help us remember your preferences, understand how you use our
+                site, and improve your browsing experience. Cookies contain information that is sent back to our
                 servers on each subsequent visit.
               </p>
             </section>
@@ -102,8 +102,8 @@ export default function CookiePolicy() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-foreground mb-2">Persistent Cookies</h3>
-                  <p>These cookies remain on your device for a specified period (ranging from days to years) 
-                  and continue to track your browsing habits even after you close your browser.</p>
+                  <p>These cookies remain on your device for a specified period (ranging from days to years)
+                    and continue to track your browsing habits even after you close your browser.</p>
                 </div>
               </div>
             </section>
@@ -146,8 +146,8 @@ export default function CookiePolicy() {
                 7. Do Not Track (DNT)
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                If your browser's Do Not Track feature is enabled, we will respect your preference not to be 
-                tracked for marketing purposes. However, we may still use essential cookies necessary for website 
+                If your browser's Do Not Track feature is enabled, we will respect your preference not to be
+                tracked for marketing purposes. However, we may still use essential cookies necessary for website
                 functionality.
               </p>
             </section>
@@ -157,7 +157,7 @@ export default function CookiePolicy() {
                 8. Data Protection
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                Information collected through cookies is subject to our Privacy Policy. We use industry-standard 
+                Information collected through cookies is subject to our Privacy Policy. We use industry-standard
                 security measures to protect your data from unauthorized access and misuse.
               </p>
             </section>
@@ -182,7 +182,7 @@ export default function CookiePolicy() {
                 10. Updates to This Policy
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                We may update this Cookie Policy from time to time. We will notify you of significant changes 
+                We may update this Cookie Policy from time to time. We will notify you of significant changes
                 by posting the updated policy on our website with a new "Last Updated" date.
               </p>
             </section>
@@ -195,7 +195,7 @@ export default function CookiePolicy() {
                 If you have questions about our use of cookies or this Cookie Policy, please contact us at:
               </p>
               <p className="text-muted-foreground mt-3">
-                Email: <a href="mailto:privacy@igniteroom.com" className="text-primary hover:underline">privacy@igniteroom.com</a>
+                Email: <a href="mailto:admin@igniteroom.in" className="text-primary hover:underline">admin@igniteroom.in</a>
               </p>
             </section>
           </div>

@@ -20,6 +20,7 @@ import Blog from "./pages/Blog";
 import Newsletter from "./pages/Newsletter";
 import FAQs from "./pages/FAQs";
 import Contact from "./pages/Contact";
+import AppComingSoon from "./pages/AppComingSoon";
 
 // Ambassador platform pages
 import AmbassadorLanding from "./pages/ambassador/AmbassadorLanding";
@@ -54,6 +55,7 @@ const App = () => (
             <Route path="/disclaimer" element={<Disclaimer />} />
             <Route path="/accessibility" element={<Accessibility />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
+            <Route path="/app" element={<AppComingSoon />} />
 
             {/* ── Ambassador Platform (all under /ambassador) ───── */}
             {/* Landing page */}

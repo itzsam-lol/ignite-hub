@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Flame } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
@@ -22,7 +22,10 @@ export default function HeroSection() {
           transition={{ duration: 0.6 }}
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/50 border border-border/50 mb-8"
         >
-          <Sparkles className="w-4 h-4 text-primary" />
+          <span className="relative flex items-center justify-center">
+            <span className="absolute w-5 h-5 rounded-full bg-primary/30 blur-[6px] animate-pulse" />
+            <Flame className="relative w-4 h-4 text-primary drop-shadow-[0_0_6px_hsl(345_100%_59%_/_0.8)]" />
+          </span>
           <span className="text-sm font-medium text-muted-foreground">Student-Led Tech Community</span>
         </motion.div>
 
