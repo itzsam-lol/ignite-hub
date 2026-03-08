@@ -1,181 +1,63 @@
-# Ignite Room — Official Community Website
+# Ignite Room Platform
 
-A premium, production-ready website for **Ignite Room**, a student-led technology community focused on empowering learners, innovators, and builders.
+The official frontend application and primary user interface for the Ignite Room Campus Ambassador Platform (igniteroom.in).
 
-## ✨ Features
-
-- **3D Interactive Logo** — Scroll-reactive 3D flame logo using React Three Fiber
-- **Smooth Animations** — Framer Motion scroll reveals and micro-interactions
-- **Dark Theme** — Deep maroon-to-black gradients with fire-pink accents
-- **Responsive Design** — Mobile-first, works on all devices
-- **SEO Optimized** — Meta tags, semantic HTML, proper heading structure
-- **Performance Focused** — Lazy loading, optimized assets, low-poly 3D
-
-## 🛠️ Tech Stack
-
-- **Framework**: React 18 + TypeScript
-- **Build Tool**: Vite
-- **Styling**: Tailwind CSS + CSS Variables
-- **Animations**: Framer Motion
-- **3D Graphics**: Three.js + React Three Fiber + Drei
-- **UI Components**: Shadcn/ui (customized)
-- **Icons**: Lucide React
+Built by Satyam (@itzsam-lol)
 
 ---
 
-## 🚀 Local Development Setup
+## Overview
 
-### Prerequisites
+The Ignite Room front-end is a high-performance, responsive React application engineered to serve the student community. It interfaces directly with the Ignite Hub API to provide authentication, real-time leaderboard rendering, task submission portals, and administrative dashboards. The UI emphasizes speed, accessibility, and a modern aesthetic suitable for a technology-focused organization.
 
-- **Node.js** 18+ (recommended: use [nvm](https://github.com/nvm-sh/nvm))
-- **npm**, **yarn**, **pnpm**, or **bun**
+## Core Architecture
 
-### Step 1: Clone the Repository
+- Framework: React 18
+- Build System: Vite
+- Language: TypeScript
+- Routing: React Router
+- State Management & Data Fetching: React Query / Context API
+- Styling: Tailwind CSS
+- Component Library: Radix UI / Shadcn
+- Animation & 3D: Framer Motion, React Three Fiber (Three.js)
+- Icons: Lucide React
 
-```bash
-git clone <YOUR_GIT_URL>
-cd <YOUR_PROJECT_NAME>
-```
+## Application Structure
 
-### Step 2: Install Dependencies
+The application architecture follows a domain-driven component structure designed for scalability and maintainability.
 
-```bash
-# Using npm
-npm install
+- Layouts & Routing: Protected and public routing boundaries utilizing higher-order components to enforce authentication states.
+- Authentication Flows: Comprehensive login, registration, and password recovery interfaces integrating securely with the backend JWT system.
+- Ambassador Dashboard: Personalized portal displaying referral statistics, application status, and verified task counts.
+- Task Submission Portal: Multipart form interfaces allowing ambassadors to report completed promotional tasks via Cloudinary-backed uploads.
+- Global Leaderboard: Real-time, ranked display of all authorized ambassadors based on their aggregated task and referral scores.
+- Administrative Interface: Secure portal for system administrators to review, approve, or reject ambassador applications and individual task submissions.
 
-# Using yarn
-yarn install
+## Design System
 
-# Using pnpm
-pnpm install
+The application utilizes a strict design system enforced through CSS variables and Tailwind configuration, ensuring consistency across all views.
 
-# Using bun (fastest)
-bun install
-```
+- Color Palette: Anchored by a deep maroon-to-black gradient scheme with highly contrasted pink-red accents for primary calls to action.
+- Typography: Utilitarian pairing of Space Grotesk for display headings and Inter for highly readable body copy.
+- Interactive Elements: Scroll-reactive 3D elements (WebGL) and subtle micro-interactions powered by Framer Motion.
 
-### Step 3: Run Development Server
+## Operations and Deployment
 
-```bash
-npm run dev
-```
+This repository serves the production frontend deployment for igniteroom.in.
 
-The site will be available at **http://localhost:5173**
+### Required Environment Configuration
 
-### Step 4: Build for Production
+The application requires strict synchronization with the backend infrastructure. Ensure the following environment variables are present in the CI/CD pipeline or deployment environment (.env.production):
 
-```bash
-# Build optimized production bundle
-npm run build
+- VITE_API_BASE_URL: The absolute URL to the Ignite Hub API production deployment.
+- VITE_RECAPTCHA_SITE_KEY: Required for secure form submissions (signup, tasks).
 
-# Preview production build locally
-npm run preview
-```
+### Build Pipeline
 
----
+The application relies on standard Node.js build pipelines optimized by Vite for rapid bundling and asset minification.
 
-## 📁 Project Structure
+1. Dependency Resolution: npm install
+2. Static Analysis: npm run lint
+3. Production Build: npm run build
 
-```
-ignite-room-website/
-├── public/
-│   └── models/
-│       └── ignite-logo.glb      # 3D logo model (scroll-interactive)
-├── src/
-│   ├── assets/
-│   │   └── ignite-logo.png      # 2D logo
-│   ├── components/
-│   │   ├── ui/                  # Shadcn components
-│   │   ├── sections/            # Page sections
-│   │   │   ├── HeroSection.tsx
-│   │   │   ├── AboutSection.tsx
-│   │   │   ├── EventsSection.tsx
-│   │   │   ├── TeamSection.tsx
-│   │   │   ├── AppSection.tsx
-│   │   │   └── CollaborationsSection.tsx
-│   │   ├── Logo3DBackground.tsx # 3D interactive background
-│   │   ├── Navbar.tsx
-│   │   └── Footer.tsx
-│   ├── pages/
-│   │   └── Index.tsx            # Main page
-│   ├── index.css                # Design system & tokens
-│   └── main.tsx                 # Entry point
-├── tailwind.config.ts           # Tailwind configuration
-├── vite.config.ts               # Vite configuration
-└── index.html                   # HTML template with SEO meta
-```
-
----
-
-## 🎨 Design System
-
-Colors are defined in `src/index.css` using HSL CSS variables:
-
-| Variable | Description |
-|----------|-------------|
-| `--primary` | Fire pink-red accent (345° 100% 59%) |
-| `--background` | Deep dark background |
-| `--secondary` | Maroon-tinted secondary |
-| `--gradient-hero` | Hero section gradient |
-| `--gradient-text` | Gradient text effect |
-
-### Typography
-- **Headings**: Space Grotesk (Google Fonts)
-- **Body**: Inter (Google Fonts)
-
----
-
-## 🔧 Customization
-
-### Updating Colors
-Edit `src/index.css`:
-```css
-:root {
-  --primary: 345 100% 59%;  /* Fire pink-red */
-}
-```
-
-### Adding Team Members
-Edit `src/components/sections/TeamSection.tsx`
-
-### Adding Events
-Edit `src/components/sections/EventsSection.tsx`
-
----
-
-## 🚢 Deployment
-
-### Option 1: Vercel
-1. Push to GitHub
-2. Import in [Vercel](https://vercel.com)
-3. Auto-deploys on push
-
-### Option 2: Netlify
-1. Push to GitHub
-2. Import in [Netlify](https://netlify.com)
-3. Build command: `npm run build`
-4. Publish directory: `dist`
-
-### Option 3: Manual/Static Hosting
-```bash
-npm run build
-# Upload 'dist' folder to any static host
-```
-
----
-
-## ⚡ Performance Notes
-
-- **3D Model**: `.glb` file is optimized and lazy-loaded
-- **Images**: Use WebP for team photos
-- **Fonts**: Preloaded via Google Fonts
-- **Code Splitting**: 3D canvas loads via React Suspense
-
----
-
-## 📄 License
-
-MIT License — free to use for your community!
-
----
-
-Built with 🔥 by **Ignite Room**
+The resulting `dist` directory contains the highly optimized static assets ready for deployment to any static hosting provider or CDN (e.g., Vercel, Netlify, Cloudflare Pages).
