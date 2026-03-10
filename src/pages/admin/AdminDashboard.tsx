@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
     Users, FileCheck, Trophy, LogOut, CheckCircle2, XCircle,
-    Eye, Download, RefreshCw, Plus, Building2, IdCard, ChevronRight, BarChart2
+    Eye, Download, RefreshCw, Plus, Building2, IdCard, ChevronRight, BarChart2, Trash2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -79,6 +79,7 @@ export default function AdminDashboard() {
     const [extRefCount, setExtRefCount] = useState('');
     const [toast, setToast] = useState('');
     const [manageModal, setManageModal] = useState<Ambassador | null>(null);
+    const [removeConfirm, setRemoveConfirm] = useState(false);
 
     const showToast = (msg: string) => {
         setToast(msg);
@@ -136,6 +137,17 @@ export default function AdminDashboard() {
             setExtRefCount('');
             loadTab('ambassadors');
         } catch { showToast('Error adding referrals'); } finally { setActionLoading(null); }
+    };
+
+    const handleRemoveAmbassador = async (id: string) => {
+        setActionLoading(id + 'remove');
+        try {
+            if (!USE_MOCK) await adminFetch(`ambassadors/${id}`, { method: 'DELETE' });
+            setAmbassadors(prev => prev.filter(a => a.id !== id));
+            setManageModal(null);
+            setRemoveConfirm(false);
+            showToast('Ambassador removed.');
+        } catch { showToast('Error removing ambassador'); } finally { setActionLoading(null); }
     };
 
     const tabs: { id: Tab; label: string; icon: React.ReactNode; badge?: number }[] = [
@@ -204,11 +216,41 @@ export default function AdminDashboard() {
                         </div>
 
                         <div className="flex gap-2">
-                            <Button variant="outline" className="flex-1" onClick={() => setManageModal(null)}>Close</Button>
+                            <Button variant="outline" className="flex-1" onClick={() => { setManageModal(null); setRemoveConfirm(false); }}>Close</Button>
                             <Button className="flex-1 bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 gap-1.5"
                                 onClick={() => { setManageModal(null); setExtRefModal({ ambassadorId: manageModal.id, name: manageModal.name }); }}>
                                 <Plus className="w-3.5 h-3.5" /> Add Referrals
                             </Button>
+                        </div>
+
+                        {/* Remove section */}
+                        <div className="mt-4 pt-4 border-t border-border/40">
+                            {!removeConfirm ? (
+                                <Button
+                                    variant="outline"
+                                    className="w-full border-destructive/30 text-destructive hover:bg-destructive/10 gap-1.5"
+                                    onClick={() => setRemoveConfirm(true)}
+                                >
+                                    <Trash2 className="w-3.5 h-3.5" /> Remove Ambassador
+                                </Button>
+                            ) : (
+                                <div className="space-y-2">
+                                    <p className="text-xs text-destructive text-center">This will permanently delete the ambassador and all their data. Are you sure?</p>
+                                    <div className="flex gap-2">
+                                        <Button variant="outline" size="sm" className="flex-1" onClick={() => setRemoveConfirm(false)}>Cancel</Button>
+                                        <Button
+                                            size="sm"
+                                            className="flex-1 bg-destructive hover:bg-destructive/90 text-white gap-1.5"
+                                            onClick={() => handleRemoveAmbassador(manageModal.id)}
+                                            disabled={actionLoading === manageModal.id + 'remove'}
+                                        >
+                                            {actionLoading === manageModal.id + 'remove'
+                                                ? <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                                : <><Trash2 className="w-3.5 h-3.5" /> Confirm Remove</>}
+                                        </Button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
