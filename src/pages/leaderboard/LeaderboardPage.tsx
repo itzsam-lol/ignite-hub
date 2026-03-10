@@ -115,8 +115,10 @@ export default function LeaderboardPage() {
                     >
                         {/* #2 */}
                         <div className="flex flex-col items-center pt-6">
-                            <div className="w-14 h-14 rounded-full bg-gray-400/10 border-2 border-gray-400/30 flex items-center justify-center text-xl font-bold text-gray-300 mb-2">
-                                {top3[1]?.ambassadorName.charAt(0)}
+                            <div className="w-14 h-14 rounded-full bg-gray-400/10 border-2 border-gray-400/30 overflow-hidden flex items-center justify-center text-xl font-bold text-gray-300 mb-2">
+                                {top3[1]?.avatarUrl
+                                    ? <img src={top3[1].avatarUrl} alt={top3[1].ambassadorName} className="w-full h-full object-cover" />
+                                    : top3[1]?.ambassadorName.charAt(0)}
                             </div>
                             <Trophy className="w-6 h-6 text-gray-300 mb-1" />
                             <p className="text-sm font-semibold text-foreground text-center truncate max-w-[100px]">{top3[1]?.ambassadorName.split(' ')[0]}</p>
@@ -127,8 +129,10 @@ export default function LeaderboardPage() {
                         {/* #1 */}
                         <div className="flex flex-col items-center">
                             <div className="relative">
-                                <div className="w-16 h-16 rounded-full bg-amber-400/20 border-2 border-amber-400/50 flex items-center justify-center text-xl font-bold text-amber-300 mb-2 shadow-lg shadow-amber-500/20">
-                                    {top3[0]?.ambassadorName.charAt(0)}
+                                <div className="w-16 h-16 rounded-full bg-amber-400/20 border-2 border-amber-400/50 overflow-hidden flex items-center justify-center text-xl font-bold text-amber-300 mb-2 shadow-lg shadow-amber-500/20">
+                                    {top3[0]?.avatarUrl
+                                        ? <img src={top3[0].avatarUrl} alt={top3[0].ambassadorName} className="w-full h-full object-cover" />
+                                        : top3[0]?.ambassadorName.charAt(0)}
                                 </div>
                                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                                     <div className="bg-amber-500 rounded-full p-1 shadow-sm">
@@ -144,8 +148,10 @@ export default function LeaderboardPage() {
 
                         {/* #3 */}
                         <div className="flex flex-col items-center pt-10">
-                            <div className="w-12 h-12 rounded-full bg-amber-700/10 border-2 border-amber-700/30 flex items-center justify-center text-lg font-bold text-amber-600 mb-2">
-                                {top3[2]?.ambassadorName.charAt(0)}
+                            <div className="w-12 h-12 rounded-full bg-amber-700/10 border-2 border-amber-700/30 overflow-hidden flex items-center justify-center text-lg font-bold text-amber-600 mb-2">
+                                {top3[2]?.avatarUrl
+                                    ? <img src={top3[2].avatarUrl} alt={top3[2].ambassadorName} className="w-full h-full object-cover" />
+                                    : top3[2]?.ambassadorName.charAt(0)}
                             </div>
                             <Trophy className="w-5 h-5 text-amber-600 mb-1" />
                             <p className="text-sm font-semibold text-foreground text-center truncate max-w-[100px]">{top3[2]?.ambassadorName.split(' ')[0]}</p>
@@ -210,12 +216,14 @@ export default function LeaderboardPage() {
                                             </td>
                                             <td className="px-5 py-4">
                                                 <div className="flex items-center gap-3">
-                                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 ${entry.rank === 1 ? 'bg-amber-500/20 text-amber-300' :
-                                                        entry.rank === 2 ? 'bg-gray-400/20 text-gray-300' :
-                                                            entry.rank === 3 ? 'bg-amber-700/20 text-amber-600' :
+                                                    <div className={`w-8 h-8 rounded-full overflow-hidden flex items-center justify-center text-sm font-bold flex-shrink-0 ${entry.rank === 1 ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' :
+                                                        entry.rank === 2 ? 'bg-gray-400/20 text-gray-300 border border-gray-400/30' :
+                                                            entry.rank === 3 ? 'bg-amber-700/20 text-amber-600 border border-amber-700/30' :
                                                                 'bg-secondary text-muted-foreground'
                                                         }`}>
-                                                        {entry.ambassadorName.charAt(0)}
+                                                        {entry.avatarUrl
+                                                            ? <img src={entry.avatarUrl} alt={entry.ambassadorName} className="w-full h-full object-cover" />
+                                                            : entry.ambassadorName.charAt(0)}
                                                     </div>
                                                     <span className={`font-medium ${entry.rank <= 3 ? 'text-foreground' : 'text-muted-foreground'}`}>
                                                         {entry.ambassadorName}

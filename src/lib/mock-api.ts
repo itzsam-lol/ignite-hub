@@ -23,6 +23,7 @@ export interface LeaderboardEntry {
     rank: number;
     ambassadorId: string;
     ambassadorName: string;
+    avatarUrl?: string | null;
     email: string;
     verifiedTasks: number;
     externalReferrals: number;
