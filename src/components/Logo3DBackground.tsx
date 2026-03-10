@@ -124,10 +124,11 @@ function Scene({ scrollProgress }: { scrollProgress: number }) {
   );
 }
 
-export default function Logo3DBackground() {
+export default function Logo3DBackground({ staticMode = false }: { staticMode?: boolean }) {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
+    if (staticMode) return; // fixed mode — no scroll tracking
     const handleScroll = () => {
       const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = scrollHeight > 0 ? window.scrollY / scrollHeight : 0;
@@ -138,7 +139,7 @@ export default function Logo3DBackground() {
     handleScroll();
     
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [staticMode]);
 
   return (
     <div 

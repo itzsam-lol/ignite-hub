@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Trophy, Flame, RefreshCw, Star, Users, Award } from 'lucide-react';
@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth-context';
 import type { LeaderboardEntry } from '@/lib/mock-api';
+
+const Logo3DBackground = lazy(() => import('@/components/Logo3DBackground'));
 
 const REFRESH_INTERVAL = 60000;
 
@@ -44,6 +46,11 @@ export default function LeaderboardPage() {
 
     return (
         <div className="min-h-screen bg-background relative overflow-hidden">
+            {/* 3D Logo Background — fixed, non-interactive */}
+            <Suspense fallback={null}>
+                <Logo3DBackground staticMode />
+            </Suspense>
+
             {/* Background */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-primary/5 rounded-full blur-3xl" />
