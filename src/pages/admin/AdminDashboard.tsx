@@ -150,6 +150,15 @@ export default function AdminDashboard() {
         } catch { showToast('Error removing ambassador'); } finally { setActionLoading(null); }
     };
 
+    const handleDeleteSubmission = async (id: string) => {
+        setActionLoading(id + 'delete');
+        try {
+            if (!USE_MOCK) await adminFetch(`submissions/${id}`, { method: 'DELETE' });
+            setSubmissions(prev => prev.filter(s => s.id !== id));
+            showToast('Submission deleted.');
+        } catch { showToast('Error deleting submission'); } finally { setActionLoading(null); }
+    };
+
     const tabs: { id: Tab; label: string; icon: React.ReactNode; badge?: number }[] = [
         { id: 'applications', label: 'Applications', icon: <Users className="w-4 h-4" />, badge: applications.length },
         { id: 'submissions', label: 'Submissions', icon: <FileCheck className="w-4 h-4" /> },
@@ -438,19 +447,33 @@ export default function AdminDashboard() {
                                             </p>
                                         </div>
 
-                                        {/* Actions — only show for PENDING */}
-                                        {sub.status === 'PENDING' && (
-                                            <div className="flex gap-2 flex-shrink-0">
-                                                <Button size="sm" className="bg-green-500/10 hover:bg-green-500/20 text-green-400 border border-green-500/20 gap-1.5"
-                                                    onClick={() => handleSubmission(sub.id, 'verify')} disabled={!!actionLoading}>
-                                                    <CheckCircle2 className="w-3.5 h-3.5" /> Verify
-                                                </Button>
-                                                <Button size="sm" variant="outline" className="border-destructive/30 text-destructive hover:bg-destructive/10 gap-1.5"
-                                                    onClick={() => handleSubmission(sub.id, 'reject')} disabled={!!actionLoading}>
-                                                    <XCircle className="w-3.5 h-3.5" /> Reject
-                                                </Button>
-                                            </div>
-                                        )}
+                                        {/* Actions — verify/reject for PENDING, delete trash for all */}
+                                        <div className="flex gap-2 flex-shrink-0 flex-wrap">
+                                            {sub.status === 'PENDING' && (
+                                                <>
+                                                    <Button size="sm" className="bg-green-500/10 hover:bg-green-500/20 text-green-400 border border-green-500/20 gap-1.5"
+                                                        onClick={() => handleSubmission(sub.id, 'verify')} disabled={!!actionLoading}>
+                                                        <CheckCircle2 className="w-3.5 h-3.5" /> Verify
+                                                    </Button>
+                                                    <Button size="sm" variant="outline" className="border-destructive/30 text-destructive hover:bg-destructive/10 gap-1.5"
+                                                        onClick={() => handleSubmission(sub.id, 'reject')} disabled={!!actionLoading}>
+                                                        <XCircle className="w-3.5 h-3.5" /> Reject
+                                                    </Button>
+                                                </>
+                                            )}
+                                            <Button
+                                                size="sm"
+                                                variant="outline"
+                                                className="border-destructive/20 text-destructive/70 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/40 gap-1"
+                                                onClick={() => handleDeleteSubmission(sub.id)}
+                                                disabled={actionLoading === sub.id + 'delete'}
+                                                title="Delete submission"
+                                            >
+                                                {actionLoading === sub.id + 'delete'
+                                                    ? <span className="w-3 h-3 border-2 border-destructive/30 border-t-destructive rounded-full animate-spin" />
+                                                    : <Trash2 className="w-3 h-3" />}
+                                            </Button>
+                                        </div>
                                     </div>
                                 ))}
                             {submissions.filter(s => subFilter === 'ALL' || s.status === subFilter).length === 0 && (

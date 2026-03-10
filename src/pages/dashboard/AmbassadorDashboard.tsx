@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
     Copy, Check, Share2, Trophy, Users, BadgeCheck, ExternalLink,
-    LogOut, Star, RefreshCw, AlertTriangle, MessageCircle, Twitter, Linkedin, Sparkles
+    LogOut, Star, RefreshCw, AlertTriangle, MessageCircle, Twitter, Linkedin, Sparkles, UserCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/lib/auth-context';
@@ -110,8 +110,8 @@ export default function AmbassadorDashboard() {
                         <span className="font-bold text-gradient text-base sm:text-lg hidden xs:block">Ignite Room</span>
                     </div>
 
-                    <nav className="flex items-center gap-2 sm:gap-4">
-                        <Link to="/contact" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mr-1 sm:mr-0">
+                    <nav className="flex items-center gap-2 sm:gap-3">
+                        <Link to="/contact" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
                             <MessageCircle className="w-4 h-4" />
                             <span className="hidden sm:inline">Support</span>
                         </Link>
@@ -119,11 +119,23 @@ export default function AmbassadorDashboard() {
                             <Trophy className="w-4 h-4" />
                             <span className="hidden sm:inline">Leaderboard</span>
                         </Link>
+                        <Link to="/ambassador/profile" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                            <UserCircle className="w-4 h-4" />
+                            <span className="hidden sm:inline">Profile</span>
+                        </Link>
                         <div className="w-px h-4 bg-border hidden sm:block" />
                         <div className="flex items-center gap-2">
-                            <div className="w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xs font-bold flex-shrink-0">
-                                {user?.name?.charAt(0) ?? '?'}
-                            </div>
+                            {user?.avatarUrl ? (
+                                <img
+                                    src={user.avatarUrl}
+                                    alt={user.name}
+                                    className="w-7 h-7 rounded-full object-cover border border-primary/30 flex-shrink-0"
+                                />
+                            ) : (
+                                <div className="w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xs font-bold flex-shrink-0">
+                                    {user?.name?.charAt(0) ?? '?'}
+                                </div>
+                            )}
                             <span className="text-sm text-muted-foreground hidden sm:block truncate max-w-[100px]">{user?.name}</span>
                         </div>
                         <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground h-8 w-8 sm:w-auto sm:px-3" onClick={logout}>

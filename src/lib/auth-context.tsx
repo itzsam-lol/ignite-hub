@@ -12,6 +12,13 @@ export interface User {
   college?: string;
   enrollmentId?: string;
   createdAt: string;
+  // Profile fields
+  avatarUrl?: string;
+  gender?: string;
+  state?: string;
+  city?: string;
+  degree?: string;
+  techStack?: string[];
 }
 
 interface AuthContextType {

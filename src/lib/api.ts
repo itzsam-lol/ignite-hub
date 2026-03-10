@@ -189,4 +189,30 @@ export const api = {
         a.click();
         return ''; // void-like
     },
+
+    // ── Profile ──────────────────────────────────────────────────────────────
+    async getProfile(): Promise<User> {
+        if (USE_MOCK) return {} as User;
+        return real<User>('/profile');
+    },
+    async updateProfile(data: {
+        gender?: string; state?: string; city?: string;
+        degree?: string; techStack?: string[];
+    }): Promise<User> {
+        if (USE_MOCK) return {} as User;
+        return real<User>('/profile', { method: 'PATCH', body: JSON.stringify(data) });
+    },
+    async uploadAvatar(file: File): Promise<{ avatarUrl: string }> {
+        if (USE_MOCK) return { avatarUrl: '' };
+        const form = new FormData();
+        form.append('avatar', file);
+        return realForm<{ avatarUrl: string }>('/profile/avatar', form);
+    },
+
+    // ── Admin: delete submission ──────────────────────────────────────────────
+    async deleteSubmission(id: string): Promise<{ ok: boolean }> {
+        if (USE_MOCK) return { ok: true };
+        return real<{ ok: boolean }>(`/admin/submissions/${id}`, { method: 'DELETE' });
+    },
 };
+
