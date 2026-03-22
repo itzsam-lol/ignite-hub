@@ -68,6 +68,40 @@ const MOCK_LB: LeaderboardEntry[] = [
     { rank: 1, ambassadorId: '1', ambassadorName: 'Approved User', college: 'IIT Delhi', verifiedTasks: 2, externalReferrals: 5, totalScore: 7 },
 ];
 
+function GithubVerificationBadge({ username }: { username: string }) {
+    const [starred, setStarred] = useState<boolean | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+
+    useEffect(() => {
+        let isMounted = true;
+        api.verifyGithubStar(username)
+            .then(res => {
+                if (isMounted) {
+                    setStarred(res.starred);
+                    setLoading(false);
+                }
+            })
+            .catch(() => {
+                if (isMounted) {
+                    setError(true);
+                    setLoading(false);
+                }
+            });
+        return () => { isMounted = false; };
+    }, [username]);
+
+    if (loading) return <span className="text-xs text-muted-foreground animate-pulse flex items-center gap-1"><RefreshCw className="w-3 h-3 animate-spin"/> Checking GitHub...</span>;
+    if (error) return <span className="text-xs text-red-500/70">GitHub check failed</span>;
+    
+    return (
+        <span className={`text-xs font-semibold flex items-center gap-1 ${starred ? 'text-green-400 bg-green-400/10 px-1.5 py-0.5 rounded' : 'text-red-400 bg-red-400/10 px-1.5 py-0.5 rounded'}`}>
+            {starred ? <CheckCircle2 className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
+            Auto Verification: {starred ? 'True' : 'False'}
+        </span>
+    );
+}
+
 export default function AdminDashboard() {
     const { user, logout } = useAuth();
     const [tab, setTab] = useState<Tab>('applications');
@@ -471,7 +505,10 @@ export default function AdminDashboard() {
                                                     {sub.status}
                                                 </span>
                                             </div>
-                                            <p className="text-sm text-muted-foreground">GitHub: @{sub.githubUsername} · {sub.phone}</p>
+                                            <div className="flex flex-col sm:flex-row sm:items-center gap-2 mt-0.5">
+                                                <p className="text-sm text-muted-foreground">GitHub: @{sub.githubUsername} · {sub.phone}</p>
+                                                <GithubVerificationBadge username={sub.githubUsername} />
+                                            </div>
                                             <p className="text-xs text-muted-foreground mt-0.5">
                                                 Via: <span className="text-foreground/70">{sub.ambassador.name}</span>
                                                 {sub.ambassador.college ? ` · ${sub.ambassador.college}` : ''}

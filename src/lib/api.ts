@@ -184,6 +184,11 @@ export const api = {
         });
     },
 
+    async verifyGithubStar(username: string): Promise<{ starred: boolean }> {
+        if (USE_MOCK) return { starred: Math.random() > 0.5 };
+        return real<{ starred: boolean }>(`/admin/verify-github/${username}`);
+    },
+
     exportSubmissionsCSV() {
         if (USE_MOCK) return MockAPI.exportSubmissionsCSV();
         const token = localStorage.getItem('ignite_token') || sessionStorage.getItem('ignite_token');
