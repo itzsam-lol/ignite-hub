@@ -44,13 +44,10 @@ export default function JoinUs() {
                 Be part of a thriving community of students, creators, and innovators. 
                 Ignite your passion, learn together, and build amazing things.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-semibold">
-                  Sign Up Now
-                </button>
-                <button className="px-8 py-3 border border-primary text-primary rounded-lg hover:bg-primary/10 transition-colors font-semibold">
-                  Learn More
-                </button>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+                <a href="https://chat.whatsapp.com/HqqpmbtlbF7DESwKgd5Mc6" target="_blank" rel="noopener noreferrer" className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-semibold">
+                  Join WhatsApp Community
+                </a>
               </div>
             </motion.div>
           </div>
@@ -106,23 +103,23 @@ export default function JoinUs() {
             {[
               {
                 step: 1,
-                title: 'Create Your Account',
-                description: 'Sign up with your email and basic information. It only takes 2 minutes!'
+                title: 'Join the WhatsApp Community',
+                description: 'Click the link to join our official WhatsApp group where all the action happens.'
               },
               {
                 step: 2,
-                title: 'Complete Your Profile',
-                description: 'Tell us about yourself, your interests, and what you\'d like to learn or build.'
+                title: 'Introduce Yourself',
+                description: 'Say hi, tell us about your college, and share what you\'re passionate about building.'
               },
               {
                 step: 3,
-                title: 'Join the Community',
-                description: 'Access exclusive events, workshops, and connect with other members.'
+                title: 'Attend Meetups & Hackathons',
+                description: 'Access exclusive events, workshops, and collaborate hands-on with other members.'
               },
               {
                 step: 4,
                 title: 'Start Building',
-                description: 'Participate in projects, attend events, and grow with the community.'
+                description: 'Participate in projects, build your portfolio, and grow with the community.'
               },
             ].map((item, index) => (
               <motion.div
@@ -163,9 +160,14 @@ export default function JoinUs() {
             <p className="text-lg text-muted-foreground mb-8">
               Join hundreds of students who are already making an impact. Your journey starts here.
             </p>
-            <button className="px-8 py-4 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-semibold text-lg">
-              Join Now
-            </button>
+            <a 
+              href="https://chat.whatsapp.com/HqqpmbtlbF7DESwKgd5Mc6" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="inline-block px-8 py-4 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-semibold text-lg"
+            >
+              Join the Movement
+            </a>
           </motion.div>
         </section>
       </main>
