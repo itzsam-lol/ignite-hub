@@ -176,18 +176,28 @@ export const api = {
         });
     },
 
+    async notifyAmbassadors(subject: string, content: string) {
+        if (USE_MOCK) return { ok: true, count: 5 };
+        return real<{ ok: boolean; count: number }>('/admin/notify-ambassadors', {
+            method: 'POST',
+            body: JSON.stringify({ subject, content }),
+        });
+    },
+
     exportSubmissionsCSV() {
         if (USE_MOCK) return MockAPI.exportSubmissionsCSV();
-        // Real backend streams CSV — open in new tab for download
         const token = localStorage.getItem('ignite_token') || sessionStorage.getItem('ignite_token');
-        const url = `${API_BASE}/admin/submissions/export`;
-        const a = document.createElement('a');
-        a.href = url;
-        // The Authorization header can't be sent via anchor tag — use query param
-        // Backend needs to support ?token=xxx for CSV download
-        a.href = `${url}?token=${token}`;
-        a.click();
-        return ''; // void-like
+        const url = `${API_BASE}/admin/submissions/export?token=${token}`;
+        window.open(url, '_blank');
+        return '';
+    },
+
+    exportAmbassadorsCSV() {
+        if (USE_MOCK) return '';
+        const token = localStorage.getItem('ignite_token') || sessionStorage.getItem('ignite_token');
+        const url = `${API_BASE}/admin/ambassadors/export?token=${token}`;
+        window.open(url, '_blank');
+        return '';
     },
 
     // ── Profile ──────────────────────────────────────────────────────────────

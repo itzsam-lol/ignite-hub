@@ -3,18 +3,22 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
     Users, FileCheck, Trophy, LogOut, CheckCircle2, XCircle,
-    Eye, Download, RefreshCw, Plus, Building2, IdCard, ChevronRight, BarChart2, Trash2
+    Eye, Download, RefreshCw, Plus, Building2, IdCard, ChevronRight, BarChart2, Trash2,
+    Mail, Send, FileText
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/lib/auth-context';
+import { api } from '@/lib/api';
+import ExportModal from '@/components/admin/ExportModal';
 import igniteLogo from '@/assets/ignite-logo.png';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 const USE_MOCK = import.meta.env.VITE_USE_MOCK !== 'false';
 
-type Tab = 'applications' | 'submissions' | 'ambassadors' | 'leaderboard';
+type Tab = 'applications' | 'submissions' | 'ambassadors' | 'leaderboard' | 'mailing';
 
 interface Application {
     id: string; name: string; email: string; phone: string;
@@ -80,6 +84,13 @@ export default function AdminDashboard() {
     const [toast, setToast] = useState('');
     const [manageModal, setManageModal] = useState<Ambassador | null>(null);
     const [removeConfirm, setRemoveConfirm] = useState(false);
+    
+    // Mailing state
+    const [mailSubject, setMailSubject] = useState('');
+    const [mailContent, setMailContent] = useState('');
+    
+    // Export state
+    const [exportModal, setExportModal] = useState<{ type: 'ambassadors' | 'submissions' } | null>(null);
 
     const showToast = (msg: string) => {
         setToast(msg);
@@ -159,11 +170,27 @@ export default function AdminDashboard() {
         } catch { showToast('Error deleting submission'); } finally { setActionLoading(null); }
     };
 
+    const handleSendEmail = async () => {
+        if (!mailSubject || !mailContent) return;
+        setActionLoading('mailing');
+        try {
+            const res = await api.notifyAmbassadors(mailSubject, mailContent);
+            showToast(`Email sent to ${res.count} ambassadors!`);
+            setMailSubject('');
+            setMailContent('');
+        } catch (e: any) {
+            showToast(e.message || 'Error sending email');
+        } finally {
+            setActionLoading(null);
+        }
+    };
+
     const tabs: { id: Tab; label: string; icon: React.ReactNode; badge?: number }[] = [
         { id: 'applications', label: 'Applications', icon: <Users className="w-4 h-4" />, badge: applications.length },
         { id: 'submissions', label: 'Submissions', icon: <FileCheck className="w-4 h-4" /> },
         { id: 'ambassadors', label: 'Ambassadors', icon: <Building2 className="w-4 h-4" />, badge: ambassadors.length },
         { id: 'leaderboard', label: 'Leaderboard', icon: <Trophy className="w-4 h-4" /> },
+        { id: 'mailing', label: 'Mailing', icon: <Mail className="w-4 h-4" /> },
     ];
 
     return (
@@ -406,9 +433,14 @@ export default function AdminDashboard() {
                 {tab === 'submissions' && (
                     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
                         <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
-                            <div>
-                                <h2 className="text-xl font-bold text-foreground">Task Submissions</h2>
-                                <p className="text-sm text-muted-foreground">Review screenshot proofs submitted via referral links.</p>
+                            <div className="flex items-center gap-3">
+                                <div>
+                                    <h2 className="text-xl font-bold text-foreground">Task Submissions</h2>
+                                    <p className="text-sm text-muted-foreground">Review screenshot proofs submitted via referral links.</p>
+                                </div>
+                                <Button variant="outline" size="sm" className="gap-1.5 h-8 text-xs" onClick={() => setExportModal({ type: 'submissions' })}>
+                                    <Download className="w-3.5 h-3.5" /> Export
+                                </Button>
                             </div>
                             <div className="flex gap-1 bg-secondary/30 rounded-lg p-1 border border-border/40">
                                 {(['ALL', 'PENDING', 'VERIFIED', 'REJECTED'] as const).map(f => (
@@ -490,14 +522,15 @@ export default function AdminDashboard() {
                 {tab === 'ambassadors' && (
                     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
                         <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
-                            <div>
-                                <h2 className="text-xl font-bold text-foreground">Active Ambassadors</h2>
-                                <p className="text-sm text-muted-foreground">{ambassadors.length} approved ambassadors. Add external referrals from Unstop or other platforms.</p>
+                            <div className="flex items-center gap-3">
+                                <div>
+                                    <h2 className="text-xl font-bold text-foreground">Active Ambassadors</h2>
+                                    <p className="text-sm text-muted-foreground">{ambassadors.length} approved ambassadors. Add external referrals from Unstop or other platforms.</p>
+                                </div>
+                                <Button variant="outline" size="sm" className="gap-1.5 h-8 text-xs" onClick={() => setExportModal({ type: 'ambassadors' })}>
+                                    <Download className="w-3.5 h-3.5" /> Export
+                                </Button>
                             </div>
-                            <Button size="sm" variant="outline" className="gap-1.5 border-border/50"
-                                onClick={() => window.open(`${API_URL}/admin/submissions/export?token=${localStorage.getItem('ignite_token') || sessionStorage.getItem('ignite_token')}`, '_blank')}>
-                                <Download className="w-3.5 h-3.5" /> Export CSV
-                            </Button>
                         </div>
                         <div className="space-y-3">
                             {ambassadors.map(amb => (
@@ -580,7 +613,102 @@ export default function AdminDashboard() {
                         </div>
                     </motion.div>
                 )}
+
+                {/* ── Tab: Mailing ─────────────────────────────── */}
+                {tab === 'mailing' && (
+                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
+                        <div className="glass-card rounded-2xl border border-border/50 p-6 sm:p-8">
+                            <div className="max-w-2xl">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <div className="p-3 bg-primary/10 rounded-xl">
+                                        <Mail className="w-6 h-6 text-primary" />
+                                    </div>
+                                    <div>
+                                        <h2 className="text-2xl font-bold text-foreground">Mailing Center</h2>
+                                        <p className="text-sm text-muted-foreground">Broadcast messages to all verified ambassadors</p>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-5">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="subject">Subject Line</Label>
+                                        <Input
+                                            id="subject"
+                                            placeholder="Task Update: New Instagram Challenge 🔥"
+                                            value={mailSubject}
+                                            onChange={e => setMailSubject(e.target.value)}
+                                            className="bg-secondary/30 border-border/40 focus:border-primary/50"
+                                        />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <div className="flex items-center justify-between">
+                                            <Label htmlFor="content">Message Content</Label>
+                                            <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Markdown &amp; HTML supported</span>
+                                        </div>
+                                        <Textarea
+                                            id="content"
+                                            placeholder="Hi team! We have a new task for you..."
+                                            value={mailContent}
+                                            onChange={e => setMailContent(e.target.value)}
+                                            className="min-h-[200px] bg-secondary/30 border-border/40 focus:border-primary/50 resize-none font-sans text-sm leading-relaxed"
+                                        />
+                                    </div>
+
+                                    <div className="pt-2">
+                                        <Button 
+                                            className="w-full sm:w-auto px-8 gap-2 bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20"
+                                            disabled={!mailSubject || !mailContent || actionLoading === 'mailing'}
+                                            onClick={handleSendEmail}
+                                        >
+                                            {actionLoading === 'mailing' ? (
+                                                <RefreshCw className="w-4 h-4 animate-spin" />
+                                            ) : (
+                                                <Send className="w-4 h-4" />
+                                            )}
+                                            Broadcast to Ambassadors
+                                        </Button>
+                                        <p className="text-[10px] text-muted-foreground mt-3 flex items-center gap-1.5 px-1">
+                                            <CheckCircle2 className="w-3 h-3 text-green-500" />
+                                            This will be sent to currently {ambassadors.length} verified ambassadors.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
             </main>
+
+            {/* Export Modal */}
+            {exportModal && (
+                <ExportModal
+                    isOpen={!!exportModal}
+                    onClose={() => setExportModal(null)}
+                    title={exportModal.type === 'ambassadors' ? 'Ambassador Data' : 'Submissions Data'}
+                    data={exportModal.type === 'ambassadors' ? ambassadors : submissions}
+                    onExportCSV={() => exportModal.type === 'ambassadors' ? api.exportAmbassadorsCSV() : api.exportSubmissionsCSV()}
+                    fields={exportModal.type === 'ambassadors' ? [
+                        { id: 'name', label: 'Name' },
+                        { id: 'email', label: 'Email' },
+                        { id: 'phone', label: 'Phone' },
+                        { id: 'college', label: 'College' },
+                        { id: 'enrollmentId', label: 'Enrollment ID' },
+                        { id: 'referralCode', label: 'Referral Code' },
+                        { id: 'leaderboardStats.verifiedTasks', label: 'Tasks Verified' },
+                        { id: 'leaderboardStats.totalScore', label: 'Total Score' },
+                        { id: 'createdAt', label: 'Joined Date' },
+                    ] : [
+                        { id: 'id', label: 'Sub ID' },
+                        { id: 'ambassador.name', label: 'Ambassador' },
+                        { id: 'ambassador.college', label: 'College' },
+                        { id: 'name', label: 'Task Name' },
+                        { id: 'githubUsername', label: 'GitHub' },
+                        { id: 'status', label: 'Status' },
+                        { id: 'createdAt', label: 'Submitted Date' },
+                    ]}
+                />
+            )}
         </div>
     );
 }
