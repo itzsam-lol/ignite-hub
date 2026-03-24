@@ -188,6 +188,15 @@ export const api = {
         if (USE_MOCK) return { starred: Math.random() > 0.5 };
         return real<{ starred: boolean }>(`/admin/verify-github/${username}`);
     },
+    async verifyGithubStarBatch(usernames: string[]): Promise<Record<string, boolean>> {
+        if (USE_MOCK) {
+            const res: Record<string, boolean> = {};
+            usernames.forEach(u => res[u] = Math.random() > 0.5);
+            return res;
+        }
+        const res = await real<{ results: Record<string, boolean> }>(`/admin/verify-github-batch?usernames=${usernames.join(',')}`);
+        return res.results;
+    },
 
     exportSubmissionsCSV() {
         if (USE_MOCK) return MockAPI.exportSubmissionsCSV();
