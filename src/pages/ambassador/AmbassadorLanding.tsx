@@ -18,7 +18,7 @@ const perks = [
 const steps = [
     { n: '01', title: 'Sign Up', desc: 'Create your ambassador account and get your unique referral link instantly.' },
     { n: '02', title: 'Spread the Word', desc: 'Share your referral link with your college network on WhatsApp, Instagram, LinkedIn.' },
-    { n: '03', title: 'Complete Tasks', desc: 'Star the Daytona GitHub repo, upload proof via your referral link.' },
+    { n: '03', title: 'Complete Tasks', desc: 'When a new task is announced, follow the instructions to earn extra points and climb the ranks.' },
     { n: '04', title: 'Climb the Ranks', desc: 'Every verified submission and external referral adds to your leaderboard score.' },
 ];
 
@@ -189,36 +189,6 @@ export default function AmbassadorLanding() {
                     </div>
                 </section>
 
-                {/* ── Task Highlight ─────────────────────────────────────────── */}
-                <section className="relative z-10 py-20 px-4">
-                    <div className="max-w-3xl mx-auto">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            className="glass-card rounded-2xl p-8 border border-primary/20 bg-primary/[0.03] text-center"
-                        >
-                            <div className="w-14 h-14 rounded-2xl bg-primary/15 flex items-center justify-center mx-auto mb-5">
-                                <Star className="w-7 h-7 text-primary" />
-                            </div>
-                            <h2 className="text-2xl font-bold text-foreground mb-3">Current Active Task</h2>
-                            <p className="text-muted-foreground mb-5 leading-relaxed">
-                                Star the <strong className="text-foreground">daytonaio/daytona</strong> repository on GitHub and upload a screenshot as proof via your referral link. Each verified submission earns you <strong className="text-primary">+1 point</strong>.
-                            </p>
-                            <div className="flex flex-wrap gap-3 justify-center mb-6">
-                                <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/80 text-sm text-foreground border border-border/50"><Star className="w-3.5 h-3.5 text-amber-400" /> Star the Repo</span>
-                                <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/80 text-sm text-foreground border border-border/50"><Camera className="w-3.5 h-3.5 text-muted-foreground" /> Screenshot Proof</span>
-                                <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/80 text-sm text-foreground border border-border/50"><LinkIcon className="w-3.5 h-3.5 text-primary" /> Share Your Link</span>
-                                <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/80 text-sm text-foreground border border-border/50"><Trophy className="w-3.5 h-3.5 text-amber-500" /> Earn Points</span>
-                            </div>
-                            <Link to="/ambassador/signup">
-                                <Button className="bg-primary hover:bg-primary/90 text-white gap-2">
-                                    <Zap className="w-4 h-4" /> Start Earning Now
-                                </Button>
-                            </Link>
-                        </motion.div>
-                    </div>
-                </section>
 
                 {/* ── FAQ ────────────────────────────────────────────────────── */}
                 <section className="relative z-10 py-20 px-4">

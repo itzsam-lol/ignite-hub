@@ -235,25 +235,6 @@ export default function AmbassadorDashboard() {
                         </div>
                     </motion.div>
 
-                    {/* Task Banner */}
-                    <motion.div variants={itemVariants}
-                        className="rounded-2xl p-4 sm:p-5 border border-primary/30 bg-gradient-to-r from-primary/10 via-accent/5 to-primary/5 flex items-center justify-between gap-4 flex-wrap"
-                    >
-                        <div className="flex items-center gap-3 min-w-0">
-                            <div className="w-9 h-9 rounded-xl bg-primary/20 flex items-center justify-center flex-shrink-0">
-                                <Star className="w-4 h-4 text-primary" />
-                            </div>
-                            <div className="min-w-0">
-                                <p className="font-semibold text-foreground text-sm">Active Task: Star the Daytona Repository</p>
-                                <p className="text-xs text-muted-foreground mt-0.5 hidden sm:block">Star the repo on GitHub and submit proof via your referral link</p>
-                            </div>
-                        </div>
-                        <a href="https://github.com/daytonaio/daytona" target="_blank" rel="noopener noreferrer" className="flex-shrink-0">
-                            <Button size="sm" className="bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 gap-1.5 h-8 text-xs">
-                                <ExternalLink className="w-3.5 h-3.5" /> View Repo
-                            </Button>
-                        </a>
-                    </motion.div>
 
                     {/* Chart + Leaderboard Preview */}
                     <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-3 gap-4">

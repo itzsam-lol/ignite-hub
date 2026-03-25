@@ -21,7 +21,7 @@ Key facts you know:
 - The program is FREE to join — no cost at all
 - Campus Ambassadors represent Ignite Room at their college
 - Points system: Total Score = Verified Task Submissions + External Referrals
-- Current active task: Star the "daytonaio/daytona" GitHub repository → upload screenshot proof via your unique referral link → earn +1 point per verified submission
+- Current active task: None at the moment! We'll be back soon with exciting new tasks.
 - Each external referral (from Unstop or other platforms) also boosts the leaderboard score
 - Leaderboard updates in real-time
 - Winners announced after the hackathon concludes; top ambassadors contacted directly
@@ -39,7 +39,7 @@ const SUGGESTIONS = [
     'How do I earn points?',
     'What are the prizes?',
     'How do I sign up?',
-    'What is the current task?',
+    'Are there any active tasks?',
 ];
 
 // ─── Component ────────────────────────────────────────────────────────────────

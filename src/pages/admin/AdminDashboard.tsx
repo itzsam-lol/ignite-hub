@@ -68,17 +68,6 @@ const MOCK_LB: LeaderboardEntry[] = [
     { rank: 1, ambassadorId: '1', ambassadorName: 'Approved User', college: 'IIT Delhi', verifiedTasks: 2, externalReferrals: 5, totalScore: 7 },
 ];
 
-function GithubVerificationBadge({ status, loading }: { status: boolean | null, loading?: boolean }) {
-    if (loading) return <span className="text-xs text-muted-foreground animate-pulse flex items-center gap-1"><RefreshCw className="w-3 h-3 animate-spin"/> Checking GitHub...</span>;
-    if (status === null) return <span className="text-xs text-muted-foreground/60 flex items-center gap-1">Not verified</span>;
-    
-    return (
-        <span className={`text-xs font-semibold flex items-center gap-1 ${status ? 'text-green-400 bg-green-400/10 px-1.5 py-0.5 rounded' : 'text-red-400 bg-red-400/10 px-1.5 py-0.5 rounded'}`}>
-            {status ? <CheckCircle2 className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
-            Auto Verification: {status ? 'True' : 'False'}
-        </span>
-    );
-}
 
 export default function AdminDashboard() {
     const { user, logout } = useAuth();
@@ -96,8 +85,6 @@ export default function AdminDashboard() {
     const [toast, setToast] = useState('');
     const [manageModal, setManageModal] = useState<Ambassador | null>(null);
     const [removeConfirm, setRemoveConfirm] = useState(false);
-    const [githubStatuses, setGithubStatuses] = useState<Record<string, boolean>>({});
-    const [verifyingBatch, setVerifyingBatch] = useState(false);
     
     // Mailing state
     const [mailSubject, setMailSubject] = useState('');
@@ -199,27 +186,6 @@ export default function AdminDashboard() {
         }
     };
 
-    const handleAutoVerifyBatch = async () => {
-        const pendingUsernames = submissions
-            .filter(s => s.status === 'PENDING' && githubStatuses[s.githubUsername] === undefined)
-            .map(s => s.githubUsername);
-        
-        if (pendingUsernames.length === 0) {
-            showToast('All pending submissions already checked.');
-            return;
-        }
-
-        setVerifyingBatch(true);
-        try {
-            const results = await api.verifyGithubStarBatch(pendingUsernames);
-            setGithubStatuses(prev => ({ ...prev, ...results }));
-            showToast(`Auto-verified ${pendingUsernames.length} submissions.`);
-        } catch {
-            showToast('Error during batch verification');
-        } finally {
-            setVerifyingBatch(false);
-        }
-    };
 
     const tabs: { id: Tab; label: string; icon: React.ReactNode; badge?: number }[] = [
         { id: 'applications', label: 'Applications', icon: <Users className="w-4 h-4" />, badge: applications.length },
@@ -485,17 +451,6 @@ export default function AdminDashboard() {
                                     >{f}</button>
                                 ))}
                             </div>
-                            {tab === 'submissions' && subFilter === 'PENDING' && submissions.length > 0 && (
-                                <Button 
-                                    size="sm" 
-                                    className="bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 gap-1.5 h-8 text-xs"
-                                    onClick={handleAutoVerifyBatch}
-                                    disabled={verifyingBatch}
-                                >
-                                    {verifyingBatch ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <CheckCircle2 className="w-3.5 h-3.5" />}
-                                    Auto-Verify All Pending
-                                </Button>
-                            )}
                         </div>
                         <div className="space-y-3">
                             {submissions
@@ -520,10 +475,6 @@ export default function AdminDashboard() {
                                             </div>
                                             <div className="flex flex-col sm:flex-row sm:items-center gap-2 mt-0.5">
                                                 <p className="text-sm text-muted-foreground">GitHub: @{sub.githubUsername} · {sub.phone}</p>
-                                                <GithubVerificationBadge 
-                                                    status={githubStatuses[sub.githubUsername] ?? null} 
-                                                    loading={verifyingBatch && sub.status === 'PENDING' && githubStatuses[sub.githubUsername] === undefined} 
-                                                />
                                             </div>
                                             <p className="text-xs text-muted-foreground mt-0.5">
                                                 Via: <span className="text-foreground/70">{sub.ambassador.name}</span>
