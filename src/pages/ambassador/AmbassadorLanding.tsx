@@ -189,6 +189,25 @@ export default function AmbassadorLanding() {
                     </div>
                 </section>
 
+                {/* ── No Active Task ─────────────────────────────────────────── */}
+                <section className="relative z-10 py-12 px-4">
+                    <div className="max-w-3xl mx-auto">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.98 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            className="glass-card rounded-2xl p-8 border border-border/50 bg-secondary/10 text-center"
+                        >
+                            <div className="w-14 h-14 rounded-2xl bg-secondary/30 flex items-center justify-center mx-auto mb-5">
+                                <Flame className="w-7 h-7 text-muted-foreground" />
+                            </div>
+                            <h2 className="text-2xl font-bold text-foreground mb-3">No Active Task</h2>
+                            <p className="text-muted-foreground leading-relaxed max-w-lg mx-auto">
+                                There are currently no active tasks available for submission. We're busy cooking up new challenges and rewards for our ambassadors!
+                            </p>
+                        </motion.div>
+                    </div>
+                </section>
 
                 {/* ── FAQ ────────────────────────────────────────────────────── */}
                 <section className="relative z-10 py-20 px-4">

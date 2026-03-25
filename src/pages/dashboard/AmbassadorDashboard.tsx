@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-    Copy, Check, Share2, Trophy, Users, BadgeCheck, ExternalLink,
+    Copy, Check, Share2, Trophy, Users, BadgeCheck, ExternalLink, Flame,
     LogOut, Star, RefreshCw, AlertTriangle, MessageCircle, Twitter, Linkedin, Sparkles, UserCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -235,6 +235,20 @@ export default function AmbassadorDashboard() {
                         </div>
                     </motion.div>
 
+                    {/* No Task Banner */}
+                    <motion.div variants={itemVariants}
+                        className="rounded-2xl p-4 sm:p-5 border border-border/50 bg-secondary/20 flex items-center justify-between gap-4 flex-wrap"
+                    >
+                        <div className="flex items-center gap-3 min-w-0">
+                            <div className="w-9 h-9 rounded-xl bg-secondary/50 flex items-center justify-center flex-shrink-0">
+                                <Flame className="w-4 h-4 text-muted-foreground" />
+                            </div>
+                            <div className="min-w-0">
+                                <p className="font-semibold text-foreground text-sm">No Active Task Currently</p>
+                                <p className="text-xs text-muted-foreground mt-0.5 hidden sm:block">We'll notify you when a new task is available. Keep sharing your referral link!</p>
+                            </div>
+                        </div>
+                    </motion.div>
 
                     {/* Chart + Leaderboard Preview */}
                     <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-3 gap-4">
