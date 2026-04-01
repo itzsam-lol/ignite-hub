@@ -330,6 +330,11 @@ export default function AdminDashboard() {
                         <span className="font-bold text-gradient hidden sm:block">Admin Panel</span>
                     </div>
                     <div className="flex items-center gap-3">
+                        <Link to="/ambassador/admin/external-verification">
+                            <Button variant="ghost" size="sm" className="gap-1.5 text-primary hover:text-primary/80">
+                                <CheckCircle2 className="w-4 h-4" /> <span className="hidden sm:inline">External Verification</span>
+                            </Button>
+                        </Link>
                         <Link to="/ambassador/leaderboard">
                             <Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground hover:text-foreground">
                                 <Trophy className="w-4 h-4" /> <span className="hidden sm:inline">Public Leaderboard</span>

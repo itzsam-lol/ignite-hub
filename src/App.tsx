@@ -34,6 +34,7 @@ import LeaderboardPage from "./pages/leaderboard/LeaderboardPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
 import ProfilePage from "./pages/profile/ProfilePage";
+import ExternalVerificationPage from "./pages/admin/ExternalVerificationPage";
 
 const queryClient = new QueryClient();
 
@@ -82,6 +83,9 @@ const App = () => (
             {/* Admin */}
             <Route path="/ambassador/admin" element={
               <AdminRoute><AdminDashboard /></AdminRoute>
+            } />
+            <Route path="/ambassador/admin/external-verification" element={
+              <AdminRoute><ExternalVerificationPage /></AdminRoute>
             } />
 
             {/* Public pages */}
