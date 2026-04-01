@@ -71,11 +71,16 @@ export default function ExternalVerificationPage() {
             // Extract usernames
             const usernames = rows.map(r => r[githubIndex]).filter(u => u && u.trim() !== '');
             const cleanUsernames = usernames.map(u => {
-                // Remove https://github.com/ prefix if present
-                if (u.includes('github.com/')) {
-                    return u.split('github.com/')[1].split('/')[0];
+                let clean = u.trim();
+                // Remove URL prefix
+                if (clean.includes('github.com/')) {
+                    clean = clean.split('github.com/')[1];
                 }
-                return u.replace('@', '');
+                // Remove @
+                clean = clean.replace('@', '');
+                // Clean up any path separators, query params, etc.
+                clean = clean.split('/')[0].split('?')[0].split('#')[0];
+                return clean;
             }).filter(u => u !== '');
             
             if (cleanUsernames.length === 0) {
@@ -92,9 +97,13 @@ export default function ExternalVerificationPage() {
             rows.forEach((r, idx) => {
                  let originalName = r[githubIndex];
                  if (!originalName) return;
-                 let cleanName = originalName.includes('github.com/') 
-                    ? originalName.split('github.com/')[1].split('/')[0] 
-                    : originalName.replace('@', '');
+                 let cleanName = originalName.trim();
+                 if (cleanName.includes('github.com/')) {
+                     cleanName = cleanName.split('github.com/')[1];
+                 }
+                 cleanName = cleanName.replace('@', '');
+                 cleanName = cleanName.split('/')[0].split('?')[0].split('#')[0];
+                 
                  finalResults[originalName] = batchResults[cleanName] ?? false;
             });
             
