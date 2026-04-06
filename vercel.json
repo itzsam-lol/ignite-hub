@@ -13,6 +13,10 @@
   ],
   "rewrites": [
     {
+      "source": "/hackarena/:path*",
+      "destination": "https://hackarena2-0.vercel.app/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
