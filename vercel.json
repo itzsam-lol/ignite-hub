@@ -14,7 +14,7 @@
   "rewrites": [
     {
       "source": "/hackarena2.0/:path*",
-      "destination": "https://hackarena2-0.vercel.app/:path*"
+      "destination": "https://hackarena2-delta.vercel.app/:path*"
     },
     {
       "source": "/(.*)",
